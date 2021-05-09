@@ -1,0 +1,69 @@
+version: '3.7'
+
+x-vue-volume:
+    &vue-volume
+    type: bind
+    source: ./frontend/
+    target: /app/
+
+services:
+    db:
+        image: mysql:8.0.20
+        command: --default-authentication-plugin=mysql_native_password
+        volumes:
+            - './mysql:/var/lib/mysql'
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        ports:
+            - 3306:3306
+        networks:
+            - symfony
+    php:
+        build:
+            context: .
+            dockerfile: ./build/php/Dockerfile
+            args:
+                TIMEZONE: ${TIMEZONE}
+        environment:
+            APP_ENV: ${APP_ENV}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            - ./symfony/:/code/symfony/
+        networks:
+            - symfony
+        depends_on: 
+            - db
+    nginx:
+        build:
+            context: .
+            dockerfile: ./build/nginx/Dockerfile
+        volumes:
+            - ./symfony/:/code/symfony/
+            - ./nginx/:/var/logs/nginx/
+            - *vue-volume
+        ports:
+            - 8080:80
+            - 3001:3001
+        networks:
+            - symfony
+    vue:
+        build:
+            context: .
+            dockerfile: ./build/vue/Dockerfile
+            target: build
+        volumes:
+            - *vue-volume
+        ports:
+            - 3000:3000 
+        networks: 
+            - symfony
+        depends_on: 
+            - nginx
+        command: npm run serve
+networks:
+    symfony:
