@@ -2,11 +2,12 @@
 
 ## Sources
 
-* Example of a php ddd project: https://github.com/CodelyTV/php-ddd-example
-* doctrine and ddd by matthiasnoback: https://matthiasnoback.nl/2018/06/doctrine-orm-and-ddd-aggregates/
-* php with ddd: https://entwickler.de/online/php/ddd-patterns-domain-driven-design-185328.html
-* why the frontend does not fall under ddd: https://khalilstemmler.com/articles/typescript-domain-driven-design/ddd-frontend/
-* A lot of YouTube Videos that I can't list all here
+* Example of a php DDD project: https://github.com/CodelyTV/php-ddd-example
+* doctrine and DDD by matthiasnoback: https://matthiasnoback.nl/2018/06/doctrine-orm-and-ddd-aggregates/
+* php with DDD: https://entwickler.de/online/php/ddd-patterns-domain-driven-design-185328.html
+* why the frontend does not fall under DDD: https://khalilstemmler.com/articles/typescript-domain-driven-design/ddd-frontend/
+* cargo example: https://github.com/codeliner/php-ddd-cargo-sample
+* [A lot of YouTube Videos that I can't list all here](https://www.youtube.com/watch?v=pfMGgd_NDPc)
 
 ## Understanding the Domain
 
@@ -22,7 +23,7 @@ I describe the process that my software should handle. In real life scenarios th
 
 3. The Users can schedule their todos for a specific date. If the date is not due it cannot change its state to Done.
 
-4. The Users can create recurring todos. They have to provide a date range and can decide in which frequency the todos are created. Only the collection as a whole can be edited which affects all todo items. Todo items belong to a recurring collection. Recurring todos should not be able to be deleted as single items. A collection has to be deleted as a whole. Each individual item can change state separately.
+4. The Users can create recurring todos. They have to provide a date range and can decide in which frequency the todos are created. Only the recurring collection as a whole can be edited which affects all todo items. Upon editing the date range or frequency the state resets. Todo items belong to a recurring collection. Todo items should not be delegable. A recurring collection has to be deleted as a whole. Each individual item can change state separately.
 
 Notice: I do not mention anything about the frontend here because the frontend ist *NOT* part of our domain. https://khalilstemmler.com/articles/typescript-domain-driven-design/ddd-frontend/
 
@@ -32,38 +33,66 @@ Having a unified terminology is a core principle of DDD. Every process/entity sh
 
 Based on those descriptions I can see two different contexts that are different from another. 
 
-The first context spans over the first 3 points. Here we're dealing with CRUD operations on singular todo items. The typical todo app that everyone knows. Every todo item is separate from each other. I can change all attributes of it. Optionally it can get a scheduled date. This todo item can be saved to the database as is. It's a simple todo app really.
+The first context spans over the first 3 points. Here we're dealing with CRUD operations on singular todo items. The typical todo app that everyone knows. Every todo item is separate from each other. Optionally it can get a scheduled date. This todo item can be saved/updated to the database as is. It's a simple todo app really.
 
 What about the second context? We are still dealing with todos but this time we have some significant changes in behavior. 
 
-First, each todo items is now related to other todos (not directly but implicit) that are in the same recurring collection. That collection holds information about a date range and a frequency. In simple words a recurring collection of todos. 
+First, each todo item is now related to other todo items (not directly but implicit) that are in the same recurring collection. That collection holds information about a date range and a frequency. In simple words a recurring collection of todos. 
 
-Second, I can't change the todo items individually anymore and I can't delete them as single units. While we have some similarities with the first context (marking individual todos as done) we also have significant differences as described. 
+Second, I can't change the todo items individually anymore and I can't delete them as single units. While we have some similarities with the first context (marking individual todos as done) we also have significant differences. 
 
-But the biggest difference is that these todo items are not saved to the DB as individual items anymore. Instead the recurring collection will be saved which preserves the state of the marked todo items.
-
-Coming from a traditional symfony application where every model corresponds to a database table we see that we have a problem. Let's say a todo item would be a Model `Todo` in the database. How can we put both processes in this model? 
+Coming from a traditional symfony application where every model corresponds to a database table we see that we have a problem. Let's say a todo item would be a Doctrine Model `TodoItem` in the database. How can we put both processes in this model? 
 
 Simple answer: We can't. 
 
-Let's take a deeper look into the `Todo` Model. In the first context the todo item has a schedule date. In the second context it doesn't. Instead it belongs to a recurring collection that holds a date range that the todo item in the first context doesn't have. 
+In the first context the todo item has a schedule date. In the second context it doesn't. Instead it belongs to a recurring collection that holds a date range that the todo item in the first context doesn't have. 
 
 What's the gist of all of this? 
 
-We now have a Term/Model `Todo` in both contexts that mean totally different things in both scenarios.
+We now have a Term/Model `TodoItem` in both contexts that mean totally different things.
 
-Let's transform these findings into a ubiquitous language
+Let's transform these findings into a ubiquitous language. I tried to use as much ubiquitous terminology as possible in this section.
 
 ### Context 1: Individual Todos
 
-* Users -> can login, end users of the software
-* Todo -> a single to do item
-* TodoState -> a definite state that the system can act upon (Done, Open)
-* ScheduleDate -> The date where the todo is due
+| Term          | Meaning                                                    |
+|---------------|------------------------------------------------------------|
+| Users         | auth user                                                  |
+| TodoItem      | a single to do item                                        |
+| Status        | a definite Status that the todo item can have (Done, Open) |
+| Title         | the title of the todo                                      |
+| ScheduledDate | the date where the todo is due                             |
 
+The `TodoItem` is the aggregate. 
 
-## Domains
+### Context 2: Recurring Todos
 
-After identifying the process and settle for a ubiquitous language we can define what is core, supporting and generic for our project.
+| Term                    | Meaning                                                    |
+|-------------------------|------------------------------------------------------------|
+| Users                   | auth user                                                  |
+| TodoItem                | a single to do item that belongs to a collection           |
+| Status                  | a definite Status that the todo item can have (Done, Open) |
+| Title                   | the title of the todo                                      |
+| RecurringTodoCollection | a set todo items                                           |
 
-* Identity Management 
+Now these terms are similar but with a noticeable difference. The TodoItem must now belong to collection. This means that the `RecurringTodoCollection` is now the aggregate and the `TodoItem` is the child. This is because a single todo item is not the center of interest anymore but rather the collection of them.
+## Conceptualize the Domain
+
+After identifying the process and settle for a ubiquitous language we can define what is core, supporting and generic for our project. In other words: Which things out of the following list are Domain related, Infrastructure related, Application related or UI related.
+
+* User -> Domain
+* Single Todos -> Domain
+* Recurring Todos -> Domain
+* Authentication -> Infrastructure
+* API -> UI
+
+## Getting more Technical
+
+As we've seen the first use case in terms of singular todo items and recurring todo items are fundamentally different. Now we have to model this and come up with a suitable domain model (and database base transactions as well).
+
+From a users perspective we want to make sure that the handling of singular todo items are similar to the recurring ones. Obviously this is a matter of the frontend and is not affecting our domain model. 
+
+On the backend though we save and retrieve singular todo items 
+
+### The Models
+
