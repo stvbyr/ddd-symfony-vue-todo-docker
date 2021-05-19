@@ -8,24 +8,32 @@ parameters:
 services:
     # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
+        autowire: true # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/'
+        resource: '../src/App/'
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
-            - '../src/Tests/'
+            - '../src/App/DependencyInjection/'
+            - '../src/App/Kernel.php'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
-        resource: '../src/Controller/'
+        resource: '../src/App/Controller/'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    TodoManagement\:
+        resource: '../src/TodoManagement/'
+
+    # We can tell Symfony's messenger component to regard AppointmentBookingHandler
+    # as a handler when command classes are dispatched through the message bus.
+    # When a handler class is able to handle a given command object on the bus,
+    # Symfony will deal with invoking the handler for us.
+    TodoManagement\SingularTodos\Application\Command\CreateTodoItemHandler:
+        tags: [messenger.message_handler]
