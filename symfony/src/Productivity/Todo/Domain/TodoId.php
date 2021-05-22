@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TodoManagement\SingularTodos\Domain;
+namespace Productivity\Todo\Domain;
 
 use Ramsey\Uuid\Uuid;
 
-final class TodoItemId
+final class TodoId
 {
     public function __construct(private string $id)
     {

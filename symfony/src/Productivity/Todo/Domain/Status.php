@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TodoManagement\SingularTodos\Domain;
+namespace Productivity\Todo\Domain;
 
 final class Status
 {

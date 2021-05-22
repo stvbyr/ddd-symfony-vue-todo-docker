@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TodoManagement\SingularTodos\Application\Command;
+namespace Productivity\Todo\Application\Command;
 
 use DateTimeImmutable;
 
-final class CreateTodoItemCommand implements CommandInterface
+final class CreateTodoCommand implements CommandInterface
 {
     public function __construct(
         private string $title,

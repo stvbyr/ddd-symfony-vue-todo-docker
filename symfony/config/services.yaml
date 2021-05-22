@@ -28,12 +28,12 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    TodoManagement\:
-        resource: '../src/TodoManagement/'
+    Productivity\:
+        resource: '../src/Productivity/'
 
     # We can tell Symfony's messenger component to regard AppointmentBookingHandler
     # as a handler when command classes are dispatched through the message bus.
     # When a handler class is able to handle a given command object on the bus,
     # Symfony will deal with invoking the handler for us.
-    TodoManagement\SingularTodos\Application\Command\CreateTodoItemHandler:
+    Productivity\Todo\Application\Command\CreateTodoHandler:
         tags: [messenger.message_handler]

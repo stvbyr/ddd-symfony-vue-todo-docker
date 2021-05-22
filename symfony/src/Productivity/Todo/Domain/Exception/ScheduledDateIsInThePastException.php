@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TodoManagement\SingularTodos\Domain\Exception;
+namespace Productivity\Todo\Domain\Exception;
 
 use Exception;
 

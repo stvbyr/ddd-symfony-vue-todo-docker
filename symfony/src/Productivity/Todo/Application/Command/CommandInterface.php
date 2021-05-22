@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TodoManagement\SingularTodos\Application\Command;
+namespace Productivity\Todo\Application\Command;
 
 interface CommandInterface
 {

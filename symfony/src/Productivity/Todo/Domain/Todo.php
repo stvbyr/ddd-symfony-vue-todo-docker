@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace TodoManagement\SingularTodos\Domain;
+namespace Productivity\Todo\Domain;
 
 use DateTimeImmutable;
-use TodoManagement\SingularTodos\Domain\Exception\NoTitleProvidedException;
-use TodoManagement\SingularTodos\Domain\Exception\ScheduledDateIsInThePastException;
-use TodoManagement\SingularTodos\Domain\Exception\TodoItemIsNotDueException;
+use Productivity\Todo\Domain\Exception\NoTitleProvidedException;
+use Productivity\Todo\Domain\Exception\ScheduledDateIsInThePastException;
+use Productivity\Todo\Domain\Exception\TodoIsNotDueException;
 
-final class TodoItem
+final class Todo
 {
     private function __construct(
-        private TodoItemId $id,
+        private TodoId $id,
         private string $title,
         private ?DateTimeImmutable $scheduledDate,
         private Status $status
@@ -20,7 +20,7 @@ final class TodoItem
     }
 
     public static function create(
-        TodoItemId $id,
+        TodoId $id,
         string $title,
         ?DateTimeImmutable $scheduledDate = null,
         ?Status $status = null
@@ -46,13 +46,13 @@ final class TodoItem
     public function markAsDone()
     {
         if ($this->scheduledDate > (new DateTimeImmutable())->setTime(0, 0, 0)) {
-            throw new TodoItemIsNotDueException('The todo item is in the future. You can\'t mark it done yet.');
+            throw new TodoIsNotDueException('The todo item is in the future. You can\'t mark it done yet.');
         }
 
         $this->status = new Status(Status::DONE);
     }
 
-    public function getId(): TodoItemId
+    public function getId(): TodoId
     {
         return $this->id;
     }

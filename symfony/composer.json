@@ -34,7 +34,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/App/",
-            "TodoManagement\\": "src/TodoManagement/"
+            "Productivity\\": "src/Productivity/"
         }
     },
     "autoload-dev": {
