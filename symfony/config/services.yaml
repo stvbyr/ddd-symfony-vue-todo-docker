@@ -11,7 +11,17 @@ services:
         autowire: true # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    # makes classes in src/ available to be used as services
+    _instanceof:
+        # When a handler class is able to handle a given command object on the bus,
+        # Symfony will deal with invoking the handler for us.
+        Productivity\Todo\Application\Command\Interface\Handler:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }
+        Productivity\Todo\Application\Query\Interface\Handler:
+            tags:
+                - { name: messenger.message_handler, bus: query.bus }
+
+    # makes classes in src/App/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/App/'
@@ -25,15 +35,6 @@ services:
         resource: '../src/App/Controller/'
         tags: ['controller.service_arguments']
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-
+    # This is were our infrastructure, application and domain code resides in
     Productivity\:
         resource: '../src/Productivity/'
-
-    # We can tell Symfony's messenger component to regard AppointmentBookingHandler
-    # as a handler when command classes are dispatched through the message bus.
-    # When a handler class is able to handle a given command object on the bus,
-    # Symfony will deal with invoking the handler for us.
-    Productivity\Todo\Application\Command\CreateTodoHandler:
-        tags: [messenger.message_handler]

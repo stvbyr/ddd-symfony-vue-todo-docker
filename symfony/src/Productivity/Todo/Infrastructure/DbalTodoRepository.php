@@ -8,7 +8,7 @@ use Productivity\Todo\Domain\Todo;
 use Productivity\Todo\Domain\TodoId;
 use Productivity\Todo\Domain\TodoRepositoryInterface;
 
-class DbalTodoRepository extends TodoRepositoryInterface
+class DbalTodoRepository implements TodoRepositoryInterface
 {
     public function findAll(): array
     {

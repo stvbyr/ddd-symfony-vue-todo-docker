@@ -146,3 +146,4 @@ On the backend though we save and retrieve singular todo items
 * why the frontend does not fall under DDD: https://khalilstemmler.com/articles/typescript-domain-driven-design/ddd-frontend/
 * cargo example: https://github.com/codeliner/php-ddd-cargo-sample
 * [A lot of YouTube Videos that I can't list all here](https://www.youtube.com/watch?v=pfMGgd_NDPc)
+* https://dev.to/patryk/symfony-messenger-component-for-cqrs-applications-884

@@ -10,23 +10,27 @@ use Productivity\Todo\Domain\Todo;
 use Productivity\Todo\Domain\TodoId;
 use Productivity\Todo\Domain\TodoRepositoryInterface;
 
-final class CreateTodoHandler implements Handler
+final class EditTodoHandler implements Handler
 {
     public function __construct(private TodoRepositoryInterface $todoRepository)
     {
     }
 
     /**
-     * @param CreateTodoCommand $command
+     * @param EditTodoCommand $command
      */
     public function __invoke(Command $command): void
     {
-        $todo = Todo::create(
-            TodoId::generate(),
+        $todoId = TodoId::fromString($command->getId());
+        $todo = $this->todoRepository->findTodo($todoId);
+
+        $updatedTodo = Todo::create(
+            $todoId,
             $command->getTitle(),
-            $command->getScheduledDate()
+            $command->getScheduledDate(),
+            $todo->getStatus(),
         );
 
-        $this->todoRepository->save($todo);
+        $this->todoRepository->save($updatedTodo);
     }
 }

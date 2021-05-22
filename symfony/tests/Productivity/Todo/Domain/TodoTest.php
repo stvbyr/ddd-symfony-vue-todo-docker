@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Productivity\Todo\Domain;
+namespace Tests\Productivity\Todo\Domain;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
