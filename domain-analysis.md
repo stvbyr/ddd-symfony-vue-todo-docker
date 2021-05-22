@@ -6,6 +6,16 @@ Before I can analyse anything I need some fundamentals that I can build on. Thes
 
 It's funny/ironical: DDD says that your domain and business case is what matters most. Which implies that the same thing has different meaning in different contexts (User vs Customer for example). Or in DDD-words, we use ubiquitous language in different contexts. But then we try to describe DDD with terminology like "aggregate" that was meant to have the same meaning for everyone. But actually they mean different things to different people. This confused me a lot. Still does. But that just as a little side note.
 
+Here is how define the terminology:
+* Domain -> the combined knowledge about a business or use case. Most of the time there is a domain expert that knows the ins and outs of domain, their rules etc.
+* Subdomain/Bounded Context -> a clearly separated boundary between business concerns. Each of these contexts define their own rules. This means that the same things (a person) means different things in different contexts. For the sales apartment the person is just someone with payment information (address, credit card info) but for the marketing apartment it is actually important to know who the person is (age, interests, etc.). 
+* Ubiquitous language: Based on the context we have to decide how concept are named. In the sales context the person might be called Account while in the marketing context they might be called audience or target.
+* Value Object: A dumb object without any logic that just holds information
+* Entities: Objects that have unique ID. Entities do not know about any database. Their properties can be made up of primitives, Value Objects or other Entities.
+* Aggregates: Compounds of objects that represent a concept of the domain
+* Aggregate root: The entry point into the aggregate. It is the thing(s) that context is concerned about.
+* Invariants: The specification or business rules that apply to the domain
+
 I have to admit that I didn't read "the book" yet and I all I know stems from articles and YouTube. But I will probably read it soon.
 
 ### Backend as single source of truth
@@ -14,13 +24,20 @@ The whole project consists of the backend (symfony) and a frontend (vue). This a
 
 ### Layered architecture
 
-I use a layered architecture to structure my code. 
+I use a layered architecture to structure my code. More precisely a onion structure.
 
-| Layer            | Meaning                                                                                          | Can depend on       |
-|------------------|--------------------------------------------------------------------------------------------------|---------------------|
-| Domain           | Core business logic, entities, aggregates, invariants, domain services                           | Isolated            |
-| Application(API) | Application logic (application services), usage of domain aggregates and Infrastructure          | Domain              |
-| Infrastructure   | Concrete implementations of the domain layer interfaces and connection to external services (db) | Domain, Application |
+| Layer          | Meaning                                                                                          | Can depend on       |
+|----------------|--------------------------------------------------------------------------------------------------|---------------------|
+| Domain         | Core business logic, entities, aggregates, invariants, domain services                           | Isolated            |
+| API            | Application logic (application services), usage of domain aggregates and Infrastructure          | Domain              |
+| UI             | Controllers, console commands. Lives under a separate namespace App\                             | API                 |
+| Infrastructure | Concrete implementations of the domain layer interfaces and connection to external services (db) | Domain, Application |
+
+1. Technically their would be a core layer which would contain low level concepts such as Lists, Stacks, etc. but I skip this.
+2. The domain is at the center. There lives our business logic which consists of aggregates, entities, domain interfaces, business rules, invariants(valid before creating), validation(valid after creation). It cannot use the API or infrastructure layer and doesn't even know that they're exit. Hence the domain is not allowed to contain any dependencies to any layer that is above it.
+3. The API is the entry point to our domain. The API ensures that we get the resources that we need from the domain *BUT* the API is not allowed to contain any domain logic. It can use aggregates and domain services as well as the infrastructure.
+4. The UI layer sits on top of the application layer and is part of the application layer with a more specific purpose. Its purpose is to provide a concrete interface for the outside world such as http responses or REST API responses. The UI layer can only use application services to communicate with the domain.
+5. Finally the infrastructure provides concrete implementations for the domain interfaces and enables the communication to third party services. For instance, a domain defines a repository interface but it does not know anything about databases, redis caches or any other outside stuff. The infrastructure is responsible for implementing that repository so that the aggregates can be saved and retrieved from a database or stored inside a redis cache. 
 
 ## Understanding the Domain
 
@@ -42,11 +59,11 @@ The goal is to write software where Users can track their productivity. What doe
 
 3. The Users can (optionally) schedule their todos for a specific date. If the date is not due it cannot change its state to Done.
 
-4. User wants to create recurring todos, we call them habits. They wanna create, read, update and delete their habits as wells as mark the individual stamps(this is the exact day the habit is due, like a timestamp) as done.
+4. User wants to create recurring todos, we call them habits. They wanna create, read, update and delete their habits as wells as mark the individual moves as done(A move is the equivalent of a todo in the first example, these are the steps that the user has to do to the goal. Hence a move.).
 
-5. User has to provide a date range and can decide in which frequency the habits are created. Only the habit as a whole can be edited which affects all stamps.
+5. User has to provide a date range and can decide in which frequency the habits are created. Only the habit as a whole can be edited which affects all moves.
 
-6. Stamps can't be deleted individually. A habit has to be deleted as a whole. Each individual stamp can change state separately.
+6. Moves can't be deleted individually. A habit has to be deleted as a whole. Each individual move can change status separately.
 
 ## Terminology/Ubiquitous language
 
@@ -58,11 +75,11 @@ Based on those descriptions I can see two different bounded contexts that are di
 
 ### Context 1: Todos
 
-The first context spans over the first 3 points. Here we're dealing with CRUD operations on singular todo items. The typical todo app that everyone knows. Every todo is separate from each other. Optionally it can get a scheduled date. This todo item can be saved/updated to the database as is. It's a simple todo app really.
+The first context spans over the first 3 points. Here we're dealing with CRUD operations on singular todo items. The typical todo app that everyone knows. Every todo is separate from each other. Optionally it can get a scheduled date. It's a simple todo app really.
 
 | Term          | Meaning                                                    |
 |---------------|------------------------------------------------------------|
-| User          | auth user                                                  |
+| User          | the user that the todo item belongs to                     |
 | Todo          | a single to do item                                        |
 | Status        | a definite Status that the todo item can have (Done, Open) |
 | Title         | the title of the todo                                      |
@@ -72,37 +89,33 @@ The `Todo` is the aggregate. It gets a unique id.
 
 ### Context 2: Habits
 
-What about the second context? We are still dealing with todos, well sort of, but this time we have some significant changes in behavior. 
+What about the second context? We are still dealing with todos, well sort of, but this time we have some significant changes in behavior and name them accordingly. 
 
-First, each todo item is now called stamp and related to other stamps (not directly but implicit) that belong to the same habit. That habit holds information about a date range and a frequency. In other words a recurring collection of todos. 
+First, each todo item is now called a "move" and related to other moves (not directly but implicit) that belong to the same habit, because a habit forms from repeating the same thing over and over again. That habit holds information about a date range (how long do I wanna do/practice this habit?) and a frequency(how often should it repeat?daily?weekly?). In other words a recurring collection of todos. 
 
-Second, I can't edit the stamps individually anymore and I can't delete them as single units. While we have some similarities with a todo item (marking individual units as done) we also have significant differences. 
+Second, I can't edit the moves individually anymore and I can't delete them as single units, because the focus lies on the habit itself. A habit only forms if you have a consistent plan so it makes no sense to make changes to individual moves or even delete them. While we have some similarities with a todo item (marking individual units as done) we also have significant differences. The biggest one is that a move is NOT a primary concern anymore other than in the first example. 
 
-Why do I mix context 1 with context 2 now?
+Why do I compare context 1 with context 2? Is the sole purpose of bounded context to separate concerns? Absolutely.
 
-Coming from a traditional symfony application you will likely use the Doctrine ORM. As you can see a todo item and a stamp are not that different from each other. It is tempting to just build a super todo class that maps with the database and can both act as a todo in the sense of the first context but can also mashed together as a series of todos that form a habit in the second context. To do that a lot of conditional logic would be necessary. Why do I mention this?
+Coming from a traditional symfony application you will likely use the Doctrine ORM. As you can see a todo item and a move are not that different from each other. It is tempting to just build a super todo class that maps with the database and can both act as a todo item in the sense of the first context but can also be mashed together as a series of todos that form a habit in the second context. To do that a lot of conditional logic would be necessary. Why do I mention this?
 
 Because I was there. I did such things and I know from experience that these kind of things can go disastrously wrong. Sure you have an object that does not duplicate logic but you couple both context into one class. Just by reading the previous paragraph you should feel wrong. Because it is. Don't do that.
 
-| Term      | Meaning                                                             |
-|-----------|---------------------------------------------------------------------|
-| User      | auth user                                                           |
-| Stamp     | one of many exact dates were the habit is due                       |
-| Status    | a definite Status that the Stamp can have (Done, Open)              |
-| Title     | the title of the habit                                              |
-| Habit     | a set of Stamps                                                     |
-| DateRange | a date boundary where the stamps are created in                     |
-| Frequency | determines how often the Stamps should be created in the date range |
+After reading this you might think: I would've never put both contexts in one class. But I would guess that you did things like this in the past. Think about the last time you extended a model because you don't wanted to have duplication even though you import methods that you don't need or even worse override already existing methods to bend the new class to your needs. Thats the trap. Thinking that you can sacrifice everything for duplication free code. It might work in the short term but create coupling that is not necessary.
+
+But in this scenario it is ok to have duplication. The use cases are completely different. 
+
+| Term      | Meaning                                                            |
+|-----------|--------------------------------------------------------------------|
+| User      | the user that the habit belongs to                                 |
+| Move      | one of many exact dates were the habit is due                      |
+| Status    | a definite Status that the Move can have (Done, Open)              |
+| Title     | the title of the habit                                             |
+| Habit     | a set of Moves                                                     |
+| DateRange | a date boundary where the moves are created in                     |
+| Frequency | determines how often the Moves should be created in the date range |
 
 The `Habit` is the aggregate. It gets a unique id.
-
-### Gist?
-
-What's the gist of all of this? 
-
-We now have a Term/Model `TodoItem` in both contexts that mean totally different things.
-
-Let's transform these findings into a ubiquitous language. I tried to use as much ubiquitous terminology as possible in this section.
 
 ## Conceptualize the Domain
 
