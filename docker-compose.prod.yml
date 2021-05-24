@@ -2,4 +2,7 @@ version: '3.7'
 
 services:
     vue:
-        command: "npm run build"
+        command: 'npm run build'
+    php:
+        environment:
+            APP_ENV: prod
