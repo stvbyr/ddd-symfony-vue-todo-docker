@@ -43,7 +43,7 @@ final class Todo
         return new self(...$arguments);
     }
 
-    public function markAsDone()
+    public function markAsDone(): void
     {
         if ($this->scheduledDate > (new DateTimeImmutable())->setTime(0, 0, 0)) {
             throw new TodoIsNotDueException('The todo item is in the future. You can\'t mark it done yet.');

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Productivity\Todo\Application;
 
 use PHPUnit\Framework\TestCase;
-use Productivity\Todo\Application\Command\MessengerCommandBus;
+use Productivity\Shared\Infrastructure\MessengerCommandBus;
 use Tests\Productivity\Todo\Fake\SymfonyMessageBus;
 use Tests\Productivity\Todo\TestDouble\DummyCommand;
 

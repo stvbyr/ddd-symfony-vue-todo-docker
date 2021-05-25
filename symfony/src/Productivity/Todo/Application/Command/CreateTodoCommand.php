@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Productivity\Todo\Application\Command;
 
 use DateTimeImmutable;
-use Productivity\Todo\Application\Command\Interface\Command;
+use Productivity\Shared\Application\Command\Interface\Command;
 
 final class CreateTodoCommand implements Command
 {

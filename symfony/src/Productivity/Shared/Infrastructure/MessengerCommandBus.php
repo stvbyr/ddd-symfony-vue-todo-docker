@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Productivity\Todo\Application\Command;
+namespace Productivity\Shared\Infrastructure;
 
-use Productivity\Todo\Application\Command\Interface\Command;
-use Productivity\Todo\Application\Command\Interface\CommandBus;
+use Productivity\Shared\Application\Command\Interface\Command;
+use Productivity\Shared\Application\Command\Interface\CommandBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class MessengerCommandBus implements CommandBus

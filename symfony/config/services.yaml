@@ -14,10 +14,10 @@ services:
     _instanceof:
         # When a handler class is able to handle a given command object on the bus,
         # Symfony will deal with invoking the handler for us.
-        Productivity\Todo\Application\Command\Interface\Handler:
+        Productivity\Shared\Application\Command\Interface\Handler:
             tags:
                 - { name: messenger.message_handler, bus: command.bus }
-        Productivity\Todo\Application\Query\Interface\Handler:
+        Productivity\Shared\Application\Query\Interface\Handler:
             tags:
                 - { name: messenger.message_handler, bus: query.bus }
 
