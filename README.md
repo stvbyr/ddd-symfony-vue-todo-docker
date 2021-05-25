@@ -1,8 +1,8 @@
 # Symfony 5 Todo App
 
-With this project I wanted to create a full stack project that uses a variety of different tools that I never used in this conjunction. 
+With this project I wanted to create a full stack project that uses a variety of different tools. First and foremost I wanted to explore a DDD approach for this project as I think that this would improve my engineering skills a lot.
 
-First and foremost I wanted to explore a DDD approach for this project as I think that this would improve my engineering skills a lot.
+To not overcommit I use wanna create a simple todo app. More on that in the domain analysis.
 
 __This Project is a WIP. So big changes are very likely.__
 ## Stack
@@ -10,7 +10,7 @@ __This Project is a WIP. So big changes are very likely.__
 * Docker
 * Nginx
 * Symfony 5
-* Mysql
+* Mysql 8
 * Vue.js 3
 
 ## Installation
@@ -38,7 +38,7 @@ For a production environment run (WIP)
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 
-This runs `npm run build` on the vue image instead of booting up the dev server. The built vue frontend can then be accessed over: http://localhost:3001
+This runs `npm run build` on the vue image instead of booting up the dev server. It also sets the `APP_ENV=prod` so that the backend is started in production mode. The built vue frontend can then be accessed over: http://localhost:3001
 
 ## Domain Analysis
 ### Prerequisites
@@ -48,14 +48,14 @@ Before I can analyse anything I need some fundamentals that I can build on. Thes
 It's funny/ironical: DDD says that your domain and business case is what matters most. Which implies that the same thing has different meaning in different contexts (User vs Customer for example). Or in DDD-words, we use ubiquitous language in different contexts. But then we try to describe DDD with terminology like "bounded context" that was meant to have the same meaning for everyone. But actually they mean different things to different people. This confused me a lot. Still does. But that just as a little side note.
 
 Here is how define the terminology:
-* Domain: the combined knowledge about a business or use case. Most of the time there is a domain expert that knows the ins and outs of domain, their rules etc.
-* Subdomain/Bounded Context: a clearly separated boundary between business concerns. Each of these contexts define their own rules. This means that the same things (a person) means different things in different contexts. For the sales apartment the person is just someone with payment information (address, credit card info) but for the marketing apartment it is actually important to know who the person is (age, interests, etc.). 
-* Ubiquitous language: Based on the context we have to decide how concepts are named. In the sales context the person might be called account while in the marketing context they might be called audience or target.
-* Value Object: A dumb object without any logic that just holds data
+* __Domain__: the combined knowledge about a business or use case. Most of the time there is a domain expert that knows the ins and outs of domain, their rules etc.
+* __Subdomain/Bounded Context__: a clearly separated boundary between business concerns. Each of these contexts define their own rules. This means that the same things (a person) means different things in different contexts. For the sales apartment the person is just someone with payment information (address, credit card info) but for the marketing apartment it is actually important to know who the person is (age, interests, etc.). 
+* __Ubiquitous language__: Based on the context we have to decide how concepts are named. In the sales context the person might be called account while in the marketing context they might be called audience or target.
+* __Value Object__: A dumb object without any logic that just holds data
 * Entities: Objects that have unique ID. Entities do not know about any database. Their properties can be made up of primitives, Value Objects or other Entities.
-* Aggregates: Compounds of objects that represent a concept of the domain
-* Aggregate root: The entry point into the aggregate. It is the thing(s) that context is concerned about. Will most of the time be an entity.
-* Invariants: The specification or business rules that apply to the domain
+* __Aggregates__: Compounds of objects that represent a concept of the domain
+* __Aggregate root__: The entry point into the aggregate. It is the thing(s) that context is concerned about. Will most of the time be an entity.
+* __Invariants__: The specification or business rules that apply to the domain
 
 I have to admit that I didn't read "the book" yet and I all I know stems from articles and YouTube. But I will probably read it soon.
 
@@ -67,18 +67,19 @@ The whole project consists of the backend (symfony) and a frontend (vue). This a
 
 I use a layered architecture to structure my code. More precisely a onion structure.
 
-| Layer          | Meaning                                                                                          | Can depend on       |
-|----------------|--------------------------------------------------------------------------------------------------|---------------------|
-| Domain         | Core business logic, entities, aggregates, invariants, domain services                           | Isolated            |
-| API            | Application logic (application services), usage of domain aggregates and Infrastructure          | Domain              |
-| UI             | Controllers, console commands. Lives under a separate namespace App\                             | API                 |
-| Infrastructure | Concrete implementations of the domain layer interfaces and connection to external services (db) | Domain, Application |
+| Layer          | Meaning                                                                                          | Can depend on          |
+|----------------|--------------------------------------------------------------------------------------------------|------------------------|
+| Domain         | Core business logic, entities, aggregates, invariants, domain services                           | Isolated               |
+| Infrastructure | Concrete implementations of the domain layer interfaces and connection to external services (db) | Domain                 |
+| Application    | Application logic (application services), usage of domain aggregates and Infrastructure          | Domain, Infrastructure |
+| UI             | Controllers, console commands. Lives under a separate namespace App\                             | Application            |
 
-1. Technically their would be a core layer which would contain low level concepts such as Lists, Stacks, etc. but I skip this.
-2. The domain is at the center. There lives our business logic which consists of aggregates, entities, domain interfaces, business rules, invariants(valid before creating), validation(valid after creation). It cannot use the API or infrastructure layer and doesn't even know that they're exist. Hence the domain is not allowed to contain any dependencies to any layer that is above it.
-3. The API is the entry point to our domain. The API ensures that we get the resources that we need from the domain *BUT* the API is not allowed to contain any domain logic. It can use aggregates and domain services as well as the infrastructure.
-4. The UI layer sits on top of the application layer and is part of the application layer with a more specific purpose. Its purpose is to provide a concrete interface for the outside world such as http responses or REST API responses. The UI layer can only use application services to communicate with the domain.
-5. Finally the infrastructure provides concrete implementations for the domain interfaces and enables the communication to third party services. For instance, a domain defines a repository interface but it does not know anything about databases, redis caches or any other outside stuff. The infrastructure is responsible for implementing that repository so that the aggregates can be saved and retrieved from a database or stored inside a redis cache. 
+(Technically their would be a core layer which would contain low level concepts such as Lists, Stacks, etc. but I skip this.)
+
+1. The domain is at the center. There lives our business logic which consists of aggregates, entities, domain interfaces, business rules, invariants(valid before creating), validation(valid after creation). It cannot use the application or infrastructure layer and doesn't even know that they're exist. Hence the domain is not allowed to contain any dependencies to any layer that is above it.
+2. Finally the infrastructure provides concrete implementations for the domain interfaces and enables the communication to third party services. For instance, a domain defines a repository interface but it does not know anything about databases, redis caches or any other outside stuff. The infrastructure is responsible for implementing that repository so that the aggregates can be saved and retrieved from a database or stored inside a redis cache. 
+3. The application is the entry point to our domain. The application ensures that we get the resources that we need from the domain *BUT* the application is not allowed to contain any domain logic. It can use aggregates and domain services as well as the infrastructure.
+4. The UI layer sits on top of the application layer. Its purpose is to provide a concrete interface to our application and the outside world such as http responses or REST API responses. The UI layer can only use application services to communicate with the domain.
 
 #### CQRS
 
