@@ -54,7 +54,6 @@ services:
         build:
             context: .
             dockerfile: ./build/vue/Dockerfile
-            target: build
         volumes:
             - *vue-volume
         ports:
