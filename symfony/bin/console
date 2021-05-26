@@ -28,7 +28,24 @@ if ($input->hasParameterOption('--no-debug', true)) {
     putenv('APP_DEBUG='.$_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
 }
 
-(new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
+// change default behaviour to include the docker .env files as these are not available outside of the docker containers
+// for erxample when running the cli from the wsl2 machine
+
+$dotEnv = new Dotenv();
+$envFiles = [];
+
+if (file_exists(dirname(__DIR__).'/../.env')) {
+    $envFiles[] = dirname(__DIR__).'/../.env';
+}
+$envFiles[] = dirname(__DIR__).'/.env';
+
+$tempFile = tmpfile();
+$tempFileName = stream_get_meta_data($tempFile)['uri'];
+foreach ($envFiles as $envFile) {
+    file_put_contents($tempFileName, file_get_contents($envFile), FILE_APPEND);
+}
+
+(new Dotenv())->bootEnv(stream_get_meta_data($tempFile)['uri']);
 
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
