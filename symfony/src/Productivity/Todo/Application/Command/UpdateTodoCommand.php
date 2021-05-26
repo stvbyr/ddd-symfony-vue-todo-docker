@@ -7,7 +7,7 @@ namespace Productivity\Todo\Application\Command;
 use DateTimeImmutable;
 use Productivity\Shared\Application\Command\Interface\Command;
 
-final class EditTodoCommand implements Command
+final class UpdateTodoCommand implements Command
 {
     public function __construct(
         private string $id,

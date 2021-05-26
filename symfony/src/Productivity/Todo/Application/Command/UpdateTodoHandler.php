@@ -10,14 +10,14 @@ use Productivity\Todo\Domain\Todo;
 use Productivity\Todo\Domain\TodoId;
 use Productivity\Todo\Domain\TodoRepositoryInterface;
 
-final class EditTodoHandler implements Handler
+final class UpdateTodoHandler implements Handler
 {
     public function __construct(private TodoRepositoryInterface $todoRepository)
     {
     }
 
     /**
-     * @param EditTodoCommand $command
+     * @param UpdateTodoCommand $command
      */
     public function __invoke(Command $command): void
     {

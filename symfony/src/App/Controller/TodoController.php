@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Form\TodoType;
 use Productivity\Todo\Application\Command\CreateTodoCommand;
+use Productivity\Todo\Application\Command\UpdateTodoCommand;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,8 +40,8 @@ class TodoController extends AbstractController
         return $this->json(['message' => 'The Todo could not be created'], 400);
     }
 
-    #[Route('/todo/edit/{uuid}', name: 'todo.edit', methods: ['put'])]
-    public function edit(string $uuid, Request $request): Response
+    #[Route('/todo/update/{uuid}', name: 'todo.update', methods: ['put'])]
+    public function update(string $uuid, Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
         $form = $this->createForm(TodoType::class);
@@ -48,15 +49,16 @@ class TodoController extends AbstractController
         $form->submit($data);
 
         if ($form->isValid()) {
-            $command = new CreateTodoCommand(
+            $command = new UpdateTodoCommand(
+                $uuid,
                 $form->get('title')->getData(),
                 $form->get('scheduledDate')->getData(),
             );
             $this->messageBus->dispatch($command);
 
-            return $this->json(['message' => 'Todo created successful']);
+            return $this->json(['message' => 'Todo updated successful']);
         }
 
-        return $this->json(['message' => 'The Todo could not be created'], 400);
+        return $this->json(['message' => 'The Todo could not be updated'], 400);
     }
 }
