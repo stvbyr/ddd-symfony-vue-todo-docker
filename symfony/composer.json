@@ -20,8 +20,8 @@
         "symfony/messenger": "5.2.*",
         "symfony/proxy-manager-bridge": "5.2.*",
         "symfony/security-csrf": "5.2.*",
-        "symfony/yaml": "5.2.*",
-        "symfony/validator": "^5.2"
+        "symfony/validator": "^5.2",
+        "symfony/yaml": "5.2.*"
     },
     "require-dev": {
         "dg/bypass-finals": "^1.3",
