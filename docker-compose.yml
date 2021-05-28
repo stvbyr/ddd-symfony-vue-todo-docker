@@ -1,7 +1,6 @@
 version: '3.7'
 
-x-vue-volume:
-    &vue-volume
+x-vue-volume: &vue-volume
     type: bind
     source: ./frontend/
     target: /app/
@@ -28,7 +27,7 @@ services:
             args:
                 TIMEZONE: ${TIMEZONE}
         environment:
-            APP_ENV: ${APP_ENV}
+            APP_ENV: dev
             MYSQL_DATABASE: ${MYSQL_DATABASE}
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -36,7 +35,7 @@ services:
             - ./symfony/:/code/symfony/
         networks:
             - symfony
-        depends_on: 
+        depends_on:
             - db
     nginx:
         build:
@@ -55,14 +54,13 @@ services:
         build:
             context: .
             dockerfile: ./build/vue/Dockerfile
-            target: build
         volumes:
             - *vue-volume
         ports:
-            - 3000:3000 
-        networks: 
+            - 3000:3000
+        networks:
             - symfony
-        depends_on: 
+        depends_on:
             - nginx
         command: npm run serve
 networks:

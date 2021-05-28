@@ -15,13 +15,15 @@ final class Todo
         private TodoId $id,
         private string $title,
         private ?DateTimeImmutable $scheduledDate,
-        private Status $status
+        private Status $status,
+        private User $user
     ) {
     }
 
     public static function create(
         TodoId $id,
         string $title,
+        User $user,
         ?DateTimeImmutable $scheduledDate = null,
         ?Status $status = null
     ): self {
@@ -43,7 +45,7 @@ final class Todo
         return new self(...$arguments);
     }
 
-    public function markAsDone()
+    public function markAsDone(): void
     {
         if ($this->scheduledDate > (new DateTimeImmutable())->setTime(0, 0, 0)) {
             throw new TodoIsNotDueException('The todo item is in the future. You can\'t mark it done yet.');
@@ -70,5 +72,10 @@ final class Todo
     public function getStatus(): Status
     {
         return $this->status;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
     }
 }

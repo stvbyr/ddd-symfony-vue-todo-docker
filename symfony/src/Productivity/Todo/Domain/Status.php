@@ -6,15 +6,15 @@ namespace Productivity\Todo\Domain;
 
 final class Status
 {
-    const OPEN = 'open';
-    const DONE = 'done';
+    public const OPEN = 'open';
+    public const DONE = 'done';
 
     public function __construct(
         private string $state = Status::OPEN,
     ) {
     }
 
-    public function asString(): string
+    public function toString(): string
     {
         return $this->state;
     }

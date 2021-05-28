@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Productivity\Todo\Application\Command;
 
 use DateTimeImmutable;
+use Productivity\Shared\Application\Command\Interface\Command;
+use Productivity\Todo\Domain\User;
 
-final class CreateTodoCommand implements CommandInterface
+final class CreateTodoCommand implements Command
 {
     public function __construct(
         private string $title,
-        private DateTimeImmutable $scheduledDate,
-        private string $status
+        private User $user,
+        private DateTimeImmutable $scheduledDate
     ) {
     }
 
@@ -25,8 +27,8 @@ final class CreateTodoCommand implements CommandInterface
         return $this->scheduledDate;
     }
 
-    public function getStatus(): string
+    public function getUser(): User
     {
-        return $this->status;
+        return $this->user;
     }
 }
