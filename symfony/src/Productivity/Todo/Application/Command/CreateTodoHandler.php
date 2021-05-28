@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Productivity\Todo\Application\Command;
 
-use Productivity\Shared\Application\Command\Interface\Command;
 use Productivity\Shared\Application\Command\Interface\Handler;
 use Productivity\Todo\Domain\Todo;
 use Productivity\Todo\Domain\TodoId;
@@ -17,10 +16,7 @@ final class CreateTodoHandler implements Handler
     {
     }
 
-    /**
-     * @param CreateTodoCommand $command
-     */
-    public function __invoke(Command $command): void
+    public function __invoke(CreateTodoCommand $command): void
     {
         $todo = Todo::create(
             TodoId::generate(),
