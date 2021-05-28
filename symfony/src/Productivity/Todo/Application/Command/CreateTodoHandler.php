@@ -9,6 +9,7 @@ use Productivity\Shared\Application\Command\Interface\Handler;
 use Productivity\Todo\Domain\Todo;
 use Productivity\Todo\Domain\TodoId;
 use Productivity\Todo\Domain\TodoRepositoryInterface;
+use Productivity\Todo\Domain\User;
 
 final class CreateTodoHandler implements Handler
 {
@@ -24,7 +25,7 @@ final class CreateTodoHandler implements Handler
         $todo = Todo::create(
             TodoId::generate(),
             $command->getTitle(),
-            $command->getUser(),
+            new User($command->getUser()),
             $command->getScheduledDate()
         );
 
