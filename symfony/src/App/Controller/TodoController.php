@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Form\ErrorResolver;
 use App\Form\TodoType;
 use Productivity\Todo\Application\Command\CreateTodoCommand;
 use Productivity\Todo\Application\Command\UpdateTodoCommand;
@@ -19,7 +20,7 @@ class TodoController extends AbstractController
     {
     }
 
-    #[Route('/todo/create', name: 'todo.create', methods: ['post'])]
+    #[Route('/todo/create', name: 'todo.create', methods: ['post'], format: 'json')]
     public function create(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
@@ -30,6 +31,7 @@ class TodoController extends AbstractController
         if ($form->isValid()) {
             $command = new CreateTodoCommand(
                 $form->get('title')->getData(),
+                1,
                 $form->get('scheduledDate')->getData(),
             );
             $this->messageBus->dispatch($command);
@@ -37,10 +39,10 @@ class TodoController extends AbstractController
             return $this->json(['message' => 'Todo created successful']);
         }
 
-        return $this->json(['message' => 'The Todo could not be created'], 400);
+        return $this->json(['message' => 'The Todo could not be created', 'errors' => ErrorResolver::getErrorsFromForm($form, true)], 400);
     }
 
-    #[Route('/todo/update/{uuid}', name: 'todo.update', methods: ['put'])]
+    #[Route('/todo/update/{uuid}', name: 'todo.update', methods: ['put'], format: 'json')]
     public function update(string $uuid, Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
