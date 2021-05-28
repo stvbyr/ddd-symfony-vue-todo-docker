@@ -23,7 +23,6 @@
     </listeners>
     -->
   <!-- Run `composer require symfony/panther` before enabling this extension -->
-
   <extensions>
     <extension class="Tests\BypassFinalHook" />
   </extensions>
