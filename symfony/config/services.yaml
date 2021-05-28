@@ -38,3 +38,9 @@ services:
     # This is were our infrastructure, application and domain code resides in
     Productivity\:
         resource: '../src/Productivity/'
+
+    # Wire up interfaces
+
+    Productivity\Todo\Infrastructure\DbalTodoRepository: ~
+
+    Productivity\Todo\Domain\TodoRepositoryInterface: '@Productivity\Todo\Infrastructure\DbalTodoRepository'
