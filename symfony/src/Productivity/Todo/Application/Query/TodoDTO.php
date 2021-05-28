@@ -11,7 +11,7 @@ class TodoDTO
     public function __construct(
         private string $title,
         private DateTimeImmutable $scheduledDate,
-        private string $status
+        private string $status,
     ) {
     }
 

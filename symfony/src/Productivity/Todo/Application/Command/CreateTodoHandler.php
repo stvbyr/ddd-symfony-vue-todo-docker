@@ -24,6 +24,7 @@ final class CreateTodoHandler implements Handler
         $todo = Todo::create(
             TodoId::generate(),
             $command->getTitle(),
+            $command->getUser(),
             $command->getScheduledDate()
         );
 

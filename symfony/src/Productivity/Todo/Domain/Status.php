@@ -14,7 +14,7 @@ final class Status
     ) {
     }
 
-    public function asString(): string
+    public function toString(): string
     {
         return $this->state;
     }

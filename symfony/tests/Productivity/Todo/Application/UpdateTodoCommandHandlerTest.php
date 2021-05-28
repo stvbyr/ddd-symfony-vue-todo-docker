@@ -17,7 +17,7 @@ final class UpdateTodoCommandHandlerTest extends TestCase
         $command = new UpdateTodoCommand('cd28a79b-511d-4529-8c29-560bcc08f45c', 'Clean Room', new DateTimeImmutable());
 
         $todoRepository = $this->createMock(TodoRepositoryInterface::class);
-        $todoRepository->expects($this->once())->method('findTodo');
+        $todoRepository->expects($this->once())->method('find');
         $todoRepository->expects($this->once())->method('save');
 
         $handler = new UpdateTodoHandler($todoRepository);

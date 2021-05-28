@@ -8,6 +8,7 @@ use Productivity\Shared\Application\Query\Interface\Query;
 use Productivity\Todo\Domain\Todo;
 use Productivity\Todo\Domain\TodoId;
 use Productivity\Todo\Domain\TodoRepositoryInterface;
+use Productivity\Todo\Domain\User;
 
 class TodoQuery implements Query
 {
@@ -22,23 +23,16 @@ class TodoQuery implements Query
         return $this->mapTodosToDTOs($todos);
     }
 
-    public function findAllDone(): array
+    public function findAllByUser(User $user): array
     {
-        $todos = $this->todoRepository->findAllDone();
+        $todos = $this->todoRepository->findAllByUser($user);
 
         return $this->mapTodosToDTOs($todos);
     }
 
-    public function findAllOpen(): array
+    public function find(TodoId $todoId): array
     {
-        $todos = $this->todoRepository->findAllOpen();
-
-        return $this->mapTodosToDTOs($todos);
-    }
-
-    public function findTodo(TodoId $todoId): array
-    {
-        $todo = $this->todoRepository->findTodo($todoId);
+        $todo = $this->todoRepository->find($todoId);
 
         return $this->mapTodoToDTO($todo);
     }
@@ -53,7 +47,7 @@ class TodoQuery implements Query
         return array_map(fn (Todo $todo) => new TodoDTO(
             $todo->getTitle(),
             $todo->getScheduledDate(),
-            $todo->getStatus()->asString()
+            $todo->getStatus()->toString(),
         ), $todos);
     }
 }

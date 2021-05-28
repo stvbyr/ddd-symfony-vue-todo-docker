@@ -8,11 +8,9 @@ interface TodoRepositoryInterface
 {
     public function findAll(): array;
 
-    public function findAllDone(): array;
+    public function findAllByUser(User $user): array;
 
-    public function findAllOpen(): array;
-
-    public function findTodo(TodoId $todoId): Todo;
+    public function find(TodoId $todoId): Todo;
 
     public function remove(TodoId $todoId): void;
 

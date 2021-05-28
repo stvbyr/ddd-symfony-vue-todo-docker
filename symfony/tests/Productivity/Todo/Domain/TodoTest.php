@@ -12,6 +12,7 @@ use Productivity\Todo\Domain\Exception\TodoIsNotDueException;
 use Productivity\Todo\Domain\Status;
 use Productivity\Todo\Domain\Todo;
 use Productivity\Todo\Domain\TodoId;
+use Productivity\Todo\Domain\User;
 
 class TodoTest extends TestCase
 {
@@ -19,18 +20,21 @@ class TodoTest extends TestCase
     {
         $id = TodoId::generate();
         $title = 'awesome title äöü';
+        $user = new User(1);
         $scheduledDate = new DateTimeImmutable();
         $status = new Status(Status::OPEN);
 
         $todo = Todo::create(
             $id,
             $title,
+            $user,
             $scheduledDate,
             $status,
         );
 
         $this->assertSame($id, $todo->getId());
         $this->assertSame($title, $todo->getTitle());
+        $this->assertSame($user, $todo->getUser());
         $this->assertEquals($scheduledDate->setTime(0, 0, 0), $todo->getScheduledDate());
         $this->assertSame($status, $todo->getStatus());
     }
@@ -39,7 +43,7 @@ class TodoTest extends TestCase
     {
         $this->expectException(NoTitleProvidedException::class);
 
-        Todo::create(TodoId::generate(), '');
+        Todo::create(TodoId::generate(), '', new User(1));
     }
 
     public function testTodoCannotBeCreatedInThePast(): void
@@ -49,20 +53,21 @@ class TodoTest extends TestCase
         Todo::create(
             TodoId::generate(),
             'awesome',
+            new User(1),
             (new DateTimeImmutable())->modify('-1 day')
         );
     }
 
     public function testTodoHasDefaultStatusOfOpen(): void
     {
-        $todo = Todo::create(TodoId::generate(), 'awesome');
+        $todo = Todo::create(TodoId::generate(), 'awesome', new User(1));
 
         $this->assertEquals(new Status(Status::OPEN), $todo->getStatus());
     }
 
     public function testTodoCanBeMarkedAsDone(): void
     {
-        $todo = Todo::create(TodoId::generate(), 'awesome');
+        $todo = Todo::create(TodoId::generate(), 'awesome', new User(1));
 
         $todo->markAsDone();
 
@@ -76,6 +81,7 @@ class TodoTest extends TestCase
         $todo = Todo::create(
             TodoId::generate(),
             'awesome',
+            new User(1),
             (new DateTimeImmutable())->modify('+1 week')
         );
 

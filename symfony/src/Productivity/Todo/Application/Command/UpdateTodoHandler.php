@@ -22,11 +22,12 @@ final class UpdateTodoHandler implements Handler
     public function __invoke(Command $command): void
     {
         $todoId = TodoId::fromString($command->getId());
-        $todo = $this->todoRepository->findTodo($todoId);
+        $todo = $this->todoRepository->find($todoId);
 
         $updatedTodo = Todo::create(
             $todoId,
             $command->getTitle(),
+            $todo->getUser(),
             $command->getScheduledDate(),
             $todo->getStatus(),
         );
