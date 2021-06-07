@@ -60,8 +60,5 @@ services:
             - 3000:3000
         networks:
             - symfony
-        depends_on:
-            - nginx
-        command: npm run serve
 networks:
     symfony:
