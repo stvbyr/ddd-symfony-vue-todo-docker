@@ -1,10 +1,5 @@
 version: '3.7'
 
-x-vue-volume: &vue-volume
-    type: bind
-    source: ./frontend/
-    target: /app/
-
 services:
     db:
         image: mysql:8.0.20
@@ -20,10 +15,10 @@ services:
             - 3306:3306
         networks:
             - symfony
-    php:
+    symfony:
         build:
             context: .
-            dockerfile: ./build/php/Dockerfile
+            dockerfile: ./build/symfony/Dockerfile
             args:
                 TIMEZONE: ${TIMEZONE}
         environment:
@@ -32,7 +27,8 @@ services:
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         volumes:
-            - ./symfony/:/code/symfony/
+            - ./symfony:/code/symfony
+            - /code/symfony/vendor
         networks:
             - symfony
         depends_on:
@@ -42,9 +38,9 @@ services:
             context: .
             dockerfile: ./build/nginx/Dockerfile
         volumes:
-            - ./symfony/:/code/symfony/
-            - ./nginx/:/var/logs/nginx/
-            - *vue-volume
+            - ./symfony:/code/symfony
+            - ./nginx:/var/logs/nginx
+            - ./frontend/dist:/app/dist
         ports:
             - 8080:80
             - 3001:3001
@@ -55,13 +51,11 @@ services:
             context: .
             dockerfile: ./build/vue/Dockerfile
         volumes:
-            - *vue-volume
+            - ./frontend:/app
+            - /app/node_modules
         ports:
             - 3000:3000
         networks:
             - symfony
-        depends_on:
-            - nginx
-        command: npm run serve
 networks:
     symfony:

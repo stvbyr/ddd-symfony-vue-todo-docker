@@ -2,7 +2,7 @@ FROM php:8-fpm
 
 ARG TIMEZONE
 
-COPY ./build/php/php.ini /usr/local/etc/php/conf.d/docker-php-config.ini
+COPY ./build/symfony/php.ini /usr/local/etc/php/conf.d/docker-php-config.ini
 
 RUN apt-get update && apt-get install -y \
     gnupg \
@@ -35,5 +35,11 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} >
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /code/symfony
+
+COPY ./symfony ./
+
+RUN composer install --no-scripts --prefer-dist --no-interaction
+
+RUN APP_ENV=prod bin/console cache:clear
 
 EXPOSE 9000

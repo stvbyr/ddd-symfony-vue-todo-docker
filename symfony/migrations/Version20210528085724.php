@@ -26,7 +26,7 @@ final class Version20210528085724 extends AbstractMigration
         $table->addColumn('title', 'string');
         $table->addColumn('scheduled_date', 'date');
         $table->addColumn('status', 'string');
-        $table->addColumn('user', 'int');
+        $table->addColumn('user', 'integer');
     }
 
     public function down(Schema $schema): void

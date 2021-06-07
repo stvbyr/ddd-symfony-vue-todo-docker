@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Productivity\Todo\Application\Command;
 
-use Productivity\Shared\Application\Command\Interface\Command;
 use Productivity\Shared\Application\Command\Interface\Handler;
 use Productivity\Todo\Domain\Todo;
 use Productivity\Todo\Domain\TodoId;
@@ -16,10 +15,7 @@ final class UpdateTodoHandler implements Handler
     {
     }
 
-    /**
-     * @param UpdateTodoCommand $command
-     */
-    public function __invoke(Command $command): void
+    public function __invoke(UpdateTodoCommand $command): void
     {
         $todoId = TodoId::fromString($command->getId());
         $todo = $this->todoRepository->find($todoId);

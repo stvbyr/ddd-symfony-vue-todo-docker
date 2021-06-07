@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Productivity\Todo\Application\Command;
 
-use Productivity\Shared\Application\Command\Interface\Command;
 use Productivity\Shared\Application\Command\Interface\Handler;
 use Productivity\Todo\Domain\Todo;
 use Productivity\Todo\Domain\TodoId;
 use Productivity\Todo\Domain\TodoRepositoryInterface;
+use Productivity\Todo\Domain\User;
 
 final class CreateTodoHandler implements Handler
 {
@@ -16,15 +16,12 @@ final class CreateTodoHandler implements Handler
     {
     }
 
-    /**
-     * @param CreateTodoCommand $command
-     */
-    public function __invoke(Command $command): void
+    public function __invoke(CreateTodoCommand $command): void
     {
         $todo = Todo::create(
             TodoId::generate(),
             $command->getTitle(),
-            $command->getUser(),
+            new User($command->getUser()),
             $command->getScheduledDate()
         );
 
