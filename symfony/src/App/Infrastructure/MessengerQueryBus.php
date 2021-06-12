@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Productivity\Shared\Infrastructure;
+namespace App\Infrastructure;
 
-use Productivity\Shared\Application\Query\Interface\Query;
-use Productivity\Shared\Application\Query\Interface\QueryBus;
+use App\Application\Query\Interface\Query;
+use App\Application\Query\Interface\QueryBus;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 

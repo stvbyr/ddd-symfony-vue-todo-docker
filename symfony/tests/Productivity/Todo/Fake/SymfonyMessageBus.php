@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Productivity\Todo\Fake;
 
-use Productivity\Shared\Application\Command\Interface\Command;
+use App\Application\Command\Interface\Command;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 

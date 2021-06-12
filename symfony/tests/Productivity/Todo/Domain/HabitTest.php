@@ -9,7 +9,7 @@ use DateTime;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-class TodoTest extends TestCase
+class HabitTest extends TestCase
 {
     public function testHabitCanBeCreated(): void
     {

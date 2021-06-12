@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Productivity\Todo\Application;
 
 use PHPUnit\Framework\TestCase;
-use Productivity\Shared\Infrastructure\MessengerCommandBus;
+use App\Infrastructure\MessengerCommandBus;
 use Tests\Productivity\Todo\Fake\SymfonyMessageBus;
 use Tests\Productivity\Todo\TestDouble\DummyCommand;
 
