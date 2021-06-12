@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Productivity\Todo\Domain;
 
-use DateInterval;
-use DateTime;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use Productivity\Habit\Domain\DateRange;
+use Productivity\Habit\Domain\HabitId;
+use Productivity\Habit\Domain\User;
 
 class HabitTest extends TestCase
 {
