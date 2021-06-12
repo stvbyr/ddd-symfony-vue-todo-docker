@@ -2,7 +2,7 @@
 
 With this project I wanted to create a full stack project that uses a variety of different tools. First and foremost I wanted to explore a DDD approach for this project as I think that this would improve my engineering skills a lot.
 
-To not overcommit I use wanna create a simple todo app. More on that in the domain analysis.
+To not overcommit I wanna create a simple todo app. More on that in the domain analysis.
 
 __This Project is a WIP. So big changes are very likely.__
 ## Stack
@@ -20,9 +20,17 @@ You need docker installed as well as [composer](https://getcomposer.org/) to man
 Clone the project 
 ```zsh
 git clone https://github.com/stvbyr/ddd-symfony-vue-todo-docker.git
+cd ddd-symfony-vue-todo-docker
 ```
 
 Rename the `.env.sample` file to `.env` and configure it to your liking. This file is only used by docker. The symfony backend uses its own `.env` file.
+
+```zsh
+cd frontend 
+npm i
+cd ../symfony
+composer install
+```
 
 Wire up docker to get the development environment started
 ```zsh
@@ -45,23 +53,23 @@ This runs `npm run build` on the vue image instead of booting up the dev server.
 
 Before I can analyse anything I need some fundamentals that I can build on. These are just my understandings of DDD, Bounded Context, etc. I may be wrong here as this is my first sort of project where I use DDD. If you have any suggestions I would be happy if you let me know. I think it's important to clarify what each of the concepts mean to me as there is a lot of discussion around different terms and what they mean and how to interpret them. 
 
-It's funny/ironical: DDD says that your domain and business case is what matters most. Which implies that the same thing has different meaning in different contexts (User vs Customer for example). Or in DDD-words, we use ubiquitous language in different contexts. But then we try to describe DDD with terminology like "bounded context" that was meant to have the same meaning for everyone. But actually they mean different things to different people. This confused me a lot. Still does. But that just as a little side note.
+It's funny/ironical: DDD says that your domain and business case is what matters most. Which implies that the same thing has different meaning in different contexts (User vs Customer for example). Or in DDD-words, we use ubiquitous language in different contexts. But then we try to describe DDD with terminology like "bounded context" that was meant to have the same meaning for everyone. But actually they mean different things to different people. This confused me a lot. Still does. At least it seems like that.
 
 Here is how define the terminology:
 * __Domain__: the combined knowledge about a business or use case. Most of the time there is a domain expert that knows the ins and outs of domain, their rules etc.
-* __Subdomain/Bounded Context__: a clearly separated boundary between business concerns. Each of these contexts define their own rules. This means that the same things (a person) means different things in different contexts. For the sales apartment the person is just someone with payment information (address, credit card info) but for the marketing apartment it is actually important to know who the person is (age, interests, etc.). 
+* __Subdomain/Bounded Context__: a clearly separated boundary between business concerns. Each of these contexts define their own rules. This means that the same things means different things in different contexts. For the sales apartment the person is just someone with payment information (address, credit card info) but for the marketing apartment it is actually important to know who the person is (age, interests, etc.). 
 * __Ubiquitous language__: Based on the context we have to decide how concepts are named. In the sales context the person might be called account while in the marketing context they might be called audience or target.
 * __Value Object__: A dumb object without any logic that just holds data
-* Entities: Objects that have unique ID. Entities do not know about any database. Their properties can be made up of primitives, Value Objects or other Entities.
+* __Entities__: Objects that have unique ID. Entities do not know about any database. Their properties can be made up of primitives, Value Objects or other Entities.
 * __Aggregates__: Compounds of objects that represent a concept of the domain
-* __Aggregate root__: The entry point into the aggregate. It is the thing(s) that context is concerned about. Will most of the time be an entity.
+* __Aggregate root__: The entry point into the aggregate. It is the thing(s) that the context is concerned about. Will most of the time be an entity.
 * __Invariants__: The specification or business rules that apply to the domain
 
 I have to admit that I didn't read "the book" yet and I all I know stems from articles and YouTube. But I will probably read it soon.
 
 #### Backend as single source of truth
 
-The whole project consists of the backend (symfony) and a frontend (vue). This analysis will just focus on the backend for now. The backend is where the core domain logic lies. This backend will be accessible through an API. This is were the boundary between the backend and everything else is. I can't control what the API consumer will do with my API. It could be that they just read from it or just write to or both. In this case I am the consumer myself but that shouldn't be a factor for designing this backend.
+The whole project consists of the backend (symfony) and a frontend (vue). This analysis will just focus on the backend for now. The backend is where the core domain logic lies. This backend will be accessible through an API. This is were the boundary between the backend and everything else is. I can't control what the API consumer will do with my API. It could be that they just read from it or just write to it or both. In this case I am the consumer myself but that shouldn't be a factor for designing this backend.
 
 #### Layered architecture
 
@@ -73,6 +81,7 @@ I use a layered architecture to structure my code. More precisely a onion struct
 | Infrastructure | Concrete implementations of the domain layer interfaces and connection to external services (db) | Domain                 |
 | Application    | Application logic (application services), usage of domain aggregates and Infrastructure          | Domain, Infrastructure |
 | UI             | Controllers, console commands. Lives under a separate namespace App\                             | Application            |
+| View           | Presents the data                                                                                | UI                     |
 
 (Technically their would be a core layer which would contain low level concepts such as Lists, Stacks, etc. but I skip this.)
 
@@ -80,16 +89,19 @@ I use a layered architecture to structure my code. More precisely a onion struct
 2. Finally the infrastructure provides concrete implementations for the domain interfaces and enables the communication to third party services. For instance, a domain defines a repository interface but it does not know anything about databases, redis caches or any other outside stuff. The infrastructure is responsible for implementing that repository so that the aggregates can be saved and retrieved from a database or stored inside a redis cache. 
 3. The application is the entry point to our domain. The application ensures that we get the resources that we need from the domain *BUT* the application is not allowed to contain any domain logic. It can use aggregates and domain services as well as the infrastructure.
 4. The UI layer sits on top of the application layer. Its purpose is to provide a concrete interface to our application and the outside world such as http responses or REST API responses. The UI layer can only use application services to communicate with the domain.
+5. The view is responsible for presenting the data that it gets from the UI. It doesn't know anything about the domain logic, it just presents it.
 
 #### CQRS
 
-I use the Command-Query-Responsibility-Segregation Principle. 
+I use the Command-Query-Responsibility-Segregation Principle. With this I am able to split my read and write operation to separate places as well as enforce a standardized way of retrieving and storing data. I use the symfony message bus to send commands and queries to their respective handlers.
 
 ### Understanding the Domain
 
-I describe the process that my software should handle. In real life scenarios these would come from the client. The client would describe to you how their customers use the domain of the client. These are called "domain experts". YOU have to understand it and ask the right questions to these people to get answers. 
+I describe the process that my software should handle. In real life scenarios like this would come from the client. The client would describe to you how their customers use the domain. These are called "domain experts". YOU have to understand it and ask the right questions to these people to get answers. 
 
 In the real world this would probably consist of a lot of email/phone communication with the client. Your goal is to understand the domain and the use cases of the customer. 
+
+You then model the domain and agree on a ubiquitous language that is used in communication and code.
 
 I have the advantage that I am the domain expert and user in one person. So I know exactly what my software should do. I will describe this in a very short and precise way.
 
@@ -121,7 +133,7 @@ Based on those descriptions I can see two different bounded contexts that are di
 
 #### Context 1: Todos
 
-The first context spans over the first 3 points. Here we're dealing with CRUD operations on todo items. The typical todo app that everyone knows. Every todo is separate from each other. Optionally it can get a scheduled date. It's a simple todo app really.
+The first context spans over the first 3 (1. - 3.) points. Here we're dealing with CRUD operations on todo items. The typical todo app that everyone knows. Every todo is separate from each other. Optionally it can get a scheduled date. It's a simple todo app really.
 
 | Term          | Meaning                                                    |
 |---------------|------------------------------------------------------------|
@@ -137,9 +149,9 @@ The `Todo` is the aggregate. It gets a unique id.
 
 What about the second context? We are still dealing with todos, well sort of, but this time we have some significant changes in behavior and name them accordingly. 
 
-First, each todo item is now called a "move" and related to other moves (not directly but implicit) that belong to the same habit, because a habit forms from repeating the same thing over and over again. That habit holds information about a date range (how long do I wanna do/practice this habit?) and a frequency(how often should it repeat?daily?weekly?). In other words a recurring collection of todos. 
+First, each todo item is now called a "move" and related to other moves (not directly but implicit) that belong to the same "habit", because a habit forms from repeating the same thing over and over again. That habit holds information about a date range (how long do I wanna do/practice this habit?) and a frequency(how often should it repeat?daily?weekly?). In other words a recurring collection of todos. 
 
-Second, I can't edit the moves individually anymore and I can't delete them as single units, because the focus lies on the habit itself. A habit only forms if you have a consistent plan so it makes no sense to make changes to individual moves or even delete them. While we have some similarities with a todo item (marking individual units as done) we also have significant differences. The biggest one is that a move is NOT a primary concern anymore other than in the first example. 
+Second, I can't edit the moves individually anymore and I can't delete them as single units, because the focus lies on the habit itself. A habit only forms if you have a consistent plan so it makes no sense to make changes to individual moves or even delete them. (at least in theory :D ) While we have some similarities with a todo item (marking individual units as done) we also have significant differences. The biggest one is that a move is NOT a primary concern anymore. 
 
 Why do I compare context 1 with context 2? Is the sole purpose of bounded context to separate concerns? Absolutely.
 
@@ -175,7 +187,7 @@ After identifying the process and settle for a ubiquitous language we can define
 
 ### Getting more Technical
 
-As we've seen the first use case in terms of singular todo items and recurring todo items are fundamentally different. Now we have to model this and come up with a suitable domain model (and database base transactions as well).
+As we've seen the first use case in terms of singular todo items and habits are fundamentally different. Now we have to model this and come up with a suitable domain model (and database base transactions as well).
 
 From a users perspective we want to make sure that the handling of singular todo items are similar to the recurring ones. Obviously this is a matter of the frontend and is not affecting our domain model. 
 
