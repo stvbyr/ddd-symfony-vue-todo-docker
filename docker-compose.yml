@@ -21,8 +21,6 @@ services:
             dockerfile: ./build/symfony/Dockerfile
             args:
                 TIMEZONE: ${TIMEZONE}
-                USER_ID: ${USER_ID:-0}
-                GROUP_ID: ${GROUP_ID:-0}
         environment:
             APP_ENV: dev
             MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -35,7 +33,6 @@ services:
             - symfony
         depends_on:
             - db
-        user: ${USER_ID:-0}:${GROUP_ID:-0}
     nginx:
         build:
             context: .
@@ -53,9 +50,6 @@ services:
         build:
             context: .
             dockerfile: ./build/vue/Dockerfile
-            args:
-                USER_ID: ${USER_ID:-0}
-                GROUP_ID: ${GROUP_ID:-0}
         volumes:
             - ./frontend:/app
             - /app/node_modules
@@ -63,6 +57,5 @@ services:
             - 3000:3000
         networks:
             - symfony
-        user: ${USER_ID:-0}:${GROUP_ID:-0}
 networks:
     symfony:
