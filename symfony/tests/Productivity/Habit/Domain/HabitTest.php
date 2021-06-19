@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Productivity\Todo\Domain;
+namespace Tests\Productivity\Habit\Domain;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
