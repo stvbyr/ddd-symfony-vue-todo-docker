@@ -33,12 +33,12 @@ final class Todo
             throw new NoTitleProvidedException('There was no title provided for the todo item.');
         }
 
-        if ($scheduledDate && (new DateTimeImmutable())->setTime(0, 0, 0) > $scheduledDate->setTime(0, 0, 0)) {
+        if ($scheduledDate && (new DateTimeImmutable())->setTime(0, 0) > $scheduledDate->setTime(0, 0)) {
             throw new ScheduledDateIsInThePastException('You can\'t create todo items that happen in the past.');
         }
 
         $arguments = array_merge($functionArguments, [
-            'scheduledDate' => $scheduledDate ? $scheduledDate->setTime(0, 0, 0) : null,
+            'scheduledDate' => $scheduledDate ? $scheduledDate->setTime(0, 0) : null,
             'status' => $status ?? new Status(Status::OPEN),
         ]);
 
@@ -47,7 +47,7 @@ final class Todo
 
     public function markAsDone(): void
     {
-        if ($this->scheduledDate > (new DateTimeImmutable())->setTime(0, 0, 0)) {
+        if ($this->scheduledDate > (new DateTimeImmutable())->setTime(0, 0)) {
             throw new TodoIsNotDueException('The todo item is in the future. You can\'t mark it done yet.');
         }
 

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Productivity\Todo\Application\Command;
 
-use DateTimeImmutable;
 use App\Application\Command\Interface\Command;
+use DateTimeImmutable;
 
 final class CreateTodoCommand implements Command
 {
     public function __construct(
         private string $title,
-        private int $user,
+        private string $user,
         private DateTimeImmutable $scheduledDate
     ) {
     }
@@ -26,7 +26,7 @@ final class CreateTodoCommand implements Command
         return $this->scheduledDate;
     }
 
-    public function getUser(): int
+    public function getUser(): string
     {
         return $this->user;
     }

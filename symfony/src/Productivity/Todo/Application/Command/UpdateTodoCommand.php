@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Productivity\Todo\Application\Command;
 
-use DateTimeImmutable;
 use App\Application\Command\Interface\Command;
+use DateTimeImmutable;
 
 final class UpdateTodoCommand implements Command
 {

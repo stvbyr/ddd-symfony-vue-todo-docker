@@ -20,7 +20,7 @@ class TodoTest extends TestCase
     {
         $id = TodoId::generate();
         $title = 'awesome title äöü';
-        $user = new User(1);
+        $user = new User('sentou');
         $scheduledDate = new DateTimeImmutable();
         $status = new Status(Status::OPEN);
 
@@ -35,7 +35,7 @@ class TodoTest extends TestCase
         $this->assertSame($id, $todo->getId());
         $this->assertSame($title, $todo->getTitle());
         $this->assertSame($user, $todo->getUser());
-        $this->assertEquals($scheduledDate->setTime(0, 0, 0), $todo->getScheduledDate());
+        $this->assertEquals($scheduledDate->setTime(0, 0), $todo->getScheduledDate());
         $this->assertSame($status, $todo->getStatus());
     }
 
@@ -43,7 +43,7 @@ class TodoTest extends TestCase
     {
         $this->expectException(NoTitleProvidedException::class);
 
-        Todo::create(TodoId::generate(), '', new User(1));
+        Todo::create(TodoId::generate(), '', new User('sentou'));
     }
 
     public function testTodoCannotBeCreatedInThePast(): void
@@ -53,21 +53,21 @@ class TodoTest extends TestCase
         Todo::create(
             TodoId::generate(),
             'awesome',
-            new User(1),
+            new User('sentou'),
             (new DateTimeImmutable())->modify('-1 day')
         );
     }
 
     public function testTodoHasDefaultStatusOfOpen(): void
     {
-        $todo = Todo::create(TodoId::generate(), 'awesome', new User(1));
+        $todo = Todo::create(TodoId::generate(), 'awesome', new User('sentou'));
 
         $this->assertEquals(new Status(Status::OPEN), $todo->getStatus());
     }
 
     public function testTodoCanBeMarkedAsDone(): void
     {
-        $todo = Todo::create(TodoId::generate(), 'awesome', new User(1));
+        $todo = Todo::create(TodoId::generate(), 'awesome', new User('sentou'));
 
         $todo->markAsDone();
 
@@ -81,7 +81,7 @@ class TodoTest extends TestCase
         $todo = Todo::create(
             TodoId::generate(),
             'awesome',
-            new User(1),
+            new User('sentou'),
             (new DateTimeImmutable())->modify('+1 week')
         );
 

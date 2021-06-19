@@ -6,12 +6,12 @@ namespace Productivity\Habit\Domain;
 
 class User
 {
-    public function __construct(private int $id)
+    public function __construct(private string $username)
     {
     }
 
-    public function getId(): int
+    public function getUsername(): string
     {
-        return $this->id;
+        return $this->username;
     }
 }
