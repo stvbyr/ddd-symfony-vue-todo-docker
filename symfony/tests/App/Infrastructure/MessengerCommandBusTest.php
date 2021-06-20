@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\App\Infrastructure\Application;
+namespace Tests\App\Infrastructure;
 
 use App\Infrastructure\MessengerCommandBus;
 use PHPUnit\Framework\TestCase;
