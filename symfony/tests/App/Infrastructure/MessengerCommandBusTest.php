@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Productivity\Todo\Application;
+namespace Tests\App\Infrastructure\Application;
 
-use PHPUnit\Framework\TestCase;
 use App\Infrastructure\MessengerCommandBus;
-use Tests\Productivity\Todo\Fake\SymfonyMessageBus;
-use Tests\Productivity\Todo\TestDouble\DummyCommand;
+use PHPUnit\Framework\TestCase;
+use Tests\App\Fake\SymfonyMessageBus;
+use Tests\App\TestDouble\DummyCommand;
 
 final class MessengerCommandBusTest extends TestCase
 {

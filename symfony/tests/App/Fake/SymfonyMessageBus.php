@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Productivity\Todo\Fake;
+namespace Tests\App\Fake;
 
 use App\Application\Command\Interface\Command;
 use Symfony\Component\Messenger\Envelope;
