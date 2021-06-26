@@ -5,10 +5,13 @@ namespace Productivity\Habit\Domain;
 use DateInterval;
 use DatePeriod;
 use DateTimeImmutable;
+use JsonSerializable;
 use Productivity\Habit\Domain\Exception\WrongRangeException;
 
-class DateRange
+class DateRange implements JsonSerializable
 {
+    public const DATE_FORMAT = 'Y-m-d';
+
     public function __construct(
         private DateTimeImmutable $from,
         private DateTimeImmutable $to,
@@ -37,5 +40,43 @@ class DateRange
         }
 
         return $dates;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'from' => $this->from->format(self::DATE_FORMAT),
+            'to' => $this->to->format(self::DATE_FORMAT),
+            'frequency' => $this->frequency->toString(),
+        ];
+    }
+
+    public function toArray(): array
+    {
+        return json_decode(json_encode($this), true);
+    }
+
+    /**
+     * Get the value of from.
+     */
+    public function getFrom(): DateTimeImmutable
+    {
+        return $this->from;
+    }
+
+    /**
+     * Get the value of to.
+     */
+    public function getTo(): DateTimeImmutable
+    {
+        return $this->to;
+    }
+
+    /**
+     * Get the value of frequency.
+     */
+    public function getFrequency(): Frequency
+    {
+        return $this->frequency;
     }
 }

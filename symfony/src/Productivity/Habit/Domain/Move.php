@@ -3,9 +3,10 @@
 namespace Productivity\Habit\Domain;
 
 use DateTimeImmutable;
+use JsonSerializable;
 use Productivity\Habit\Domain\Exception\MoveIsNotDueException;
 
-final class Move
+final class Move implements JsonSerializable
 {
     private Status $status;
 
@@ -15,6 +16,9 @@ final class Move
         $this->status = new Status(Status::OPEN);
     }
 
+    /**
+     * @throws MoveIsNotDueException
+     */
     public function markAsDone(): void
     {
         if ($this->scheduledDate > (new DateTimeImmutable())->setTime(0, 0)) {
@@ -32,5 +36,18 @@ final class Move
     public function getStatus(): Status
     {
         return $this->status;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'scheduledDate' => $this->scheduledDate->format('Y-m-d'),
+            'status' => $this->status->toString(),
+        ];
+    }
+
+    public function toArray()
+    {
+        return json_decode(json_encode($this), true);
     }
 }

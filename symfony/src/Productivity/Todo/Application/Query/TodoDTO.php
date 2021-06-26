@@ -12,6 +12,7 @@ class TodoDTO
         private string $title,
         private DateTimeImmutable $scheduledDate,
         private string $status,
+        private string $user,
     ) {
     }
 
@@ -28,5 +29,10 @@ class TodoDTO
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    public function getUser(): string
+    {
+        return $this->user;
     }
 }

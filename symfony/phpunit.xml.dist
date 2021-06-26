@@ -9,6 +9,10 @@
       <directory suffix=".php">src/Productivity/Todo/Application/Query</directory>
       <directory suffix=".php">src/Productivity/Todo/Habit/Query</directory>
       <directory suffix=".php">src/App/DataFixtures</directory>
+
+      <file>src/App/Kernel.php</file>
+      <file>src/Productivity/Habit/Domain/HabitId.php</file>
+      <file>src/Productivity/Todo/Domain/TodoId.php</file>
     </exclude>
   </coverage>
   <php>

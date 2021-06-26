@@ -60,9 +60,9 @@ class Habit
         return $this->dateRange;
     }
 
-    public function getFrequency(): Frequency
+    public function getMoves(): MovesCollection
     {
-        return $this->frequency;
+        return $this->moves;
     }
 
     private function generateMoves(): void

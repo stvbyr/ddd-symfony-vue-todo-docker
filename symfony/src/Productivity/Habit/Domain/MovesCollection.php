@@ -4,8 +4,9 @@ namespace Productivity\Habit\Domain;
 
 use DateTimeImmutable;
 use Exception;
+use JsonSerializable;
 
-class MovesCollection
+class MovesCollection implements JsonSerializable
 {
     public function __construct(
         private array $moves = []
@@ -33,9 +34,11 @@ class MovesCollection
      */
     public function findByDate(DateTimeImmutable $date): Move
     {
+        $isSameDate = fn (Move $move) => $move->getScheduledDate()->setTime(0, 0) == $date->setTime(0, 0);
+
         $filtered = array_filter(
             $this->moves,
-            fn (Move $move) => $move->getScheduledDate()->setTime(0, 0) == $date->setTime(0, 0)
+            $isSameDate
         );
 
         if (0 === count($filtered)) {
@@ -45,8 +48,13 @@ class MovesCollection
         return array_shift($filtered);
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return $this->moves;
+    }
+
+    public function toArray(): array
+    {
+        return json_decode(json_encode($this), true);
     }
 }
