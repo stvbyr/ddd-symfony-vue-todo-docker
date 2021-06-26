@@ -5,6 +5,11 @@
     <include>
       <directory suffix=".php">src</directory>
     </include>
+    <exclude>
+      <directory suffix=".php">src/Productivity/Todo/Application/Query</directory>
+      <directory suffix=".php">src/Productivity/Todo/Habit/Query</directory>
+      <directory suffix=".php">src/App/DataFixtures</directory>
+    </exclude>
   </coverage>
   <php>
     <ini name="error_reporting" value="-1" />
