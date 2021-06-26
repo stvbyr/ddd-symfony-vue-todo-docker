@@ -42,7 +42,7 @@ class HabitTest extends TestCase
         $this->assertSame($this->habitConfig['user'], $habit->getUser());
     }
 
-    public function testCorrectAmountOfMovesAreGenerated()
+    public function testCorrectAmountOfMovesAreGenerated(): void
     {
         $habit = Habit::create(...$this->habitConfig);
 

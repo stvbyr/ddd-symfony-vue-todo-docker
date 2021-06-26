@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Productivity\Habit\Domain;
 
 use DateInterval;
@@ -41,7 +43,7 @@ class DateRange implements JsonSerializable
         return new self(...$dateRange);
     }
 
-    public static function getDaysInRange(): array
+    public function getDaysInRange(): array
     {
         $period = new DatePeriod(
             $this->from->setTime(0, 0),

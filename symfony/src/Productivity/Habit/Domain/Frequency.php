@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Productivity\Habit\Domain;
 
 use Productivity\Habit\Domain\Exception\FrequencyOutOfBoundsException;

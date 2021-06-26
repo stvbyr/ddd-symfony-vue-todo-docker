@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Productivity\Habit\Domain;
 
 use DateTimeImmutable;
@@ -12,14 +14,14 @@ class MoveTest extends TestCase
 {
     public const DATE_FORMAT = 'Y-m-d';
 
-    public function testMoveIsCreatedWithStatusOpenByDefault()
+    public function testMoveIsCreatedWithStatusOpenByDefault(): void
     {
         $move = new Move(new DateTimeImmutable('today'));
 
         $this->assertEquals(new Status(Status::OPEN), $move->getStatus());
     }
 
-    public function testCannotBeMarkedAsDoneIfInTheFuture()
+    public function testCannotBeMarkedAsDoneIfInTheFuture(): void
     {
         $this->expectException(MoveIsNotDueException::class);
 
@@ -28,7 +30,7 @@ class MoveTest extends TestCase
         $move->markAsDone();
     }
 
-    public function testCanBeTransformedToArray()
+    public function testCanBeTransformedToArray(): void
     {
         $date = new DateTimeImmutable('today');
 

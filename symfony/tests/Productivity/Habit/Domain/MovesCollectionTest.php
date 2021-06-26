@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Productivity\Habit\Domain;
 
 use DateTimeImmutable;
@@ -12,7 +14,7 @@ class MovesCollectionTest extends TestCase
 {
     public const DATE_FORMAT = 'Y-m-d';
 
-    public function testCanBeTransformedToArray()
+    public function testCanBeTransformedToArray(): void
     {
         $today = new DateTimeImmutable('today');
         $tomorrow = new DateTimeImmutable('+1 day');

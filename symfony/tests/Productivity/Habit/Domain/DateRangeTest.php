@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Productivity\Habit\Domain;
 
 use DateTimeImmutable;
@@ -11,7 +13,7 @@ class DateRangeTest extends TestCase
 {
     public const DATE_FORMAT = 'Y-m-d';
 
-    public function testCanBeTransformedToArray()
+    public function testCanBeTransformedToArray(): void
     {
         $from = new DateTimeImmutable('today');
         $to = new DateTimeImmutable('+3 days');
