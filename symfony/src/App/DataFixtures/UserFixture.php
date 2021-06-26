@@ -17,6 +17,7 @@ class UserFixture extends Fixture
     {
         $user = new User();
         $user->setUsername('admin');
+        $user->setRoles(['ROLE_USER']);
 
         $user->setPassword($this->passwordHasher->hashPassword(
             $user,
