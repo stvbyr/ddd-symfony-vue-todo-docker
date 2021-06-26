@@ -26,7 +26,22 @@ class DateRange implements JsonSerializable
         }
     }
 
-    public function getDaysInRange(): array
+    public function fromArray(array $dateRange): self
+    {
+        $dateRangeIsValid = (
+            !isset($dateRange['from']) ||
+            !isset($dateRange['to']) ||
+            !isset($dateRange['frequency'])
+        );
+
+        if (!$dateRangeIsValid) {
+            throw new \Exception("'from', 'to' and 'frequency' have to present in the dateRange.");
+        }
+
+        return new self(...$dateRange);
+    }
+
+    public static function getDaysInRange(): array
     {
         $period = new DatePeriod(
             $this->from->setTime(0, 0),

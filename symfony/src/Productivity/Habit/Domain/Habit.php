@@ -6,15 +6,14 @@ use DateTimeImmutable;
 
 class Habit
 {
-    private MovesCollection $moves;
-
     public function __construct(
         private HabitId $id,
         private string $title,
         private User $user,
         private DateRange $dateRange,
+        private ?MovesCollection $moves = null
     ) {
-        $this->generateMoves();
+        $this->initMovesIfNotAlreadyDone();
     }
 
     public static function create(
@@ -22,6 +21,7 @@ class Habit
         string $title,
         User $user,
         DateRange $dateRange,
+        ?MovesCollection $moves,
     ): self {
         $functionArguments = get_defined_vars();
 
@@ -63,6 +63,13 @@ class Habit
     public function getMoves(): MovesCollection
     {
         return $this->moves;
+    }
+
+    private function initMovesIfNotAlreadyDone(): void
+    {
+        if (!$this->moves) {
+            $this->generateMoves();
+        }
     }
 
     private function generateMoves(): void
