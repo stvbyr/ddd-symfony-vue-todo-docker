@@ -6,6 +6,9 @@ namespace App\Controller;
 
 use App\Form\ErrorResolver;
 use App\Form\HabitType;
+use Productivity\Habit\Application\Query\HabitQuery;
+use Productivity\Habit\Domain\HabitId;
+use Productivity\Todo\Application\Command\CreateHabitCommand;
 use Productivity\Todo\Application\Command\CreateTodoCommand;
 use Productivity\Todo\Application\Command\DeleteTodoCommand;
 use Productivity\Todo\Application\Command\UpdateTodoCommand;
@@ -22,6 +25,14 @@ class HabitController extends AbstractController
     {
     }
 
+    #[Route('/habit/{uuid}', name: 'habit.read', methods: ['get'], format: 'json')]
+    public function read(string $uuid, HabitQuery $todoQuery): Response
+    {
+        $todo = $todoQuery->find(HabitId::fromString($uuid));
+
+        return $this->json($todo);
+    }
+
     #[Route('/habit/create', name: 'habit.create', methods: ['post'], format: 'json')]
     public function create(Request $request, UserInterface $user): Response
     {
@@ -31,7 +42,7 @@ class HabitController extends AbstractController
         $form->submit($data);
 
         if ($form->isValid()) {
-            $command = new CreateTodoCommand(
+            $command = new CreateHabitCommand(
                 $form->get('title')->getData(),
                 $user->getUserIdentifier(),
                 $form->get('scheduledDate')->getData(),
