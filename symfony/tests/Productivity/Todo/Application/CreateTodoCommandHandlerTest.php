@@ -14,7 +14,7 @@ final class CreateTodoCommandHandlerTest extends TestCase
 {
     public function testTodoItemIsSaved(): void
     {
-        $command = new CreateTodoCommand('Clean Room', 1, new DateTimeImmutable());
+        $command = new CreateTodoCommand('Clean Room', 'sentou', new DateTimeImmutable());
 
         $todoRepository = $this->createMock(TodoRepositoryInterface::class);
         $todoRepository->expects($this->once())->method('save');

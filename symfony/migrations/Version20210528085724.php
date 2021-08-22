@@ -20,7 +20,7 @@ final class Version20210528085724 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $table = $schema->createTable('todo');
+        $table = $schema->createTable('app_todo');
 
         $table->addColumn('uuid', 'string');
         $table->addColumn('title', 'string');
@@ -32,6 +32,6 @@ final class Version20210528085724 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $schema->dropTable('todo');
+        $schema->dropTable('app_todo');
     }
 }

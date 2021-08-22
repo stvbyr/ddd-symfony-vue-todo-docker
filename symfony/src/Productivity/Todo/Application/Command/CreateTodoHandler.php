@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Productivity\Todo\Application\Command;
 
-use Productivity\Shared\Application\Command\Interface\Handler;
+use App\Application\Command\Interface\Handler;
 use Productivity\Todo\Domain\Todo;
 use Productivity\Todo\Domain\TodoId;
 use Productivity\Todo\Domain\TodoRepositoryInterface;

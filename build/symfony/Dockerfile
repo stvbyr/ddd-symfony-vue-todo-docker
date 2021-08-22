@@ -38,7 +38,7 @@ WORKDIR /code/symfony
 
 COPY ./symfony ./
 
-RUN composer install --no-scripts --prefer-dist --no-interaction
+RUN composer install
 
 RUN APP_ENV=prod bin/console cache:clear
 

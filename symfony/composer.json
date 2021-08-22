@@ -12,24 +12,26 @@
         "doctrine/doctrine-bundle": "^2.3",
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/orm": "^2.8",
+        "lexik/jwt-authentication-bundle": "^2.11",
         "phpdocumentor/reflection-docblock": "^5.2",
         "ramsey/uuid": "^4.1",
-        "symfony/console": "5.2.*",
-        "symfony/dotenv": "5.2.*",
+        "symfony/console": "5.3.*",
+        "symfony/dotenv": "5.3.*",
         "symfony/flex": "^1.3.1",
-        "symfony/form": "5.2.*",
-        "symfony/framework-bundle": "5.2.*",
-        "symfony/messenger": "5.2.*",
-        "symfony/property-access": "5.2.*",
-        "symfony/property-info": "5.2.*",
-        "symfony/proxy-manager-bridge": "5.2.*",
-        "symfony/security-csrf": "5.2.*",
-        "symfony/serializer": "5.2.*",
+        "symfony/form": "5.3.*",
+        "symfony/framework-bundle": "5.3.*",
+        "symfony/messenger": "5.3.*",
+        "symfony/property-access": "5.3.*",
+        "symfony/property-info": "5.3.*",
+        "symfony/proxy-manager-bridge": "5.3.*",
+        "symfony/security-csrf": "5.3.*",
+        "symfony/serializer": "5.3.*",
         "symfony/validator": "^5.2",
-        "symfony/yaml": "5.2.*"
+        "symfony/yaml": "5.3.*"
     },
     "require-dev": {
         "dg/bypass-finals": "^1.3",
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "friendsofphp/php-cs-fixer": "^3.0",
         "phpunit/phpunit": "^9.5",
         "symfony/maker-bundle": "^1.31",
@@ -70,6 +72,10 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "test:coverage-text": [
+            "@putenv XDEBUG_MODE=coverage",
+            "vendor/bin/phpunit --color=always --coverage-text"
         ]
     },
     "conflict": {
@@ -78,7 +84,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "5.2.*"
+            "require": "5.3.*"
         }
     }
 }

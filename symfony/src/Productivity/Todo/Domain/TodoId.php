@@ -20,7 +20,7 @@ final class TodoId
     public static function fromString(string $id): self
     {
         if (false === Uuid::isValid($id)) {
-            throw new \DomainException(\sprintf("AppointmentId '%s' is not valid", $id));
+            throw new \DomainException(\sprintf("TodoId '%s' is not valid", $id));
         }
 
         return new self($id);
