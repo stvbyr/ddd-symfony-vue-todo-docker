@@ -2,32 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Productivity\Todo\Application\Command;
+namespace Productivity\Habit\Application\Command;
 
 use App\Application\Command\Interface\Handler;
-use Productivity\Todo\Domain\Todo;
-use Productivity\Todo\Domain\TodoId;
-use Productivity\Todo\Domain\TodoRepositoryInterface;
+use Productivity\Habit\Domain\DateRange;
+use Productivity\Habit\Domain\Habit;
+use Productivity\Habit\Domain\HabitId;
+use Productivity\Habit\Domain\HabitRepositoryInterface;
+use Productivity\Habit\Domain\User;
 
-final class UpdateTodoHandler implements Handler
+final class UpdateHabitHandler implements Handler
 {
-    public function __construct(private TodoRepositoryInterface $todoRepository)
+    public function __construct(private HabitRepositoryInterface $habitRepository)
     {
     }
 
-    public function __invoke(UpdateTodoCommand $command): void
+    public function __invoke(UpdateHabitCommand $command): void
     {
-        $todoId = TodoId::fromString($command->getId());
-        $todo = $this->todoRepository->find($todoId);
+        $habitId = HabitId::fromString($command->getId());
+        $habit = $this->habitRepository->find($habitId);
 
-        $updatedTodo = Todo::create(
-            $todoId,
+        $updatedHabit = new Habit(
+            $habit->getId(),
             $command->getTitle(),
-            $todo->getUser(),
-            $command->getScheduledDate(),
-            $todo->getStatus(),
+            new User($command->getUser()),
+            DateRange::fromArray($command->getDateRange()),
         );
 
-        $this->todoRepository->save($updatedTodo);
+        $this->habitRepository->save($updatedHabit);
     }
 }

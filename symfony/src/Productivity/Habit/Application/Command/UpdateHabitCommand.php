@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Productivity\Todo\Application\Command;
+namespace Productivity\Habit\Application\Command;
 
 use App\Application\Command\Interface\Command;
-use DateTimeImmutable;
 
-final class UpdateTodoCommand implements Command
+final class UpdateHabitCommand implements Command
 {
     public function __construct(
         private string $id,
         private string $title,
-        private DateTimeImmutable $scheduledDate,
+        private string $user,
+        private array $dateRange
     ) {
     }
 
@@ -26,8 +26,13 @@ final class UpdateTodoCommand implements Command
         return $this->title;
     }
 
-    public function getScheduledDate(): DateTimeImmutable
+    public function getUser(): string
     {
-        return $this->scheduledDate;
+        return $this->user;
+    }
+
+    public function getDateRange(): array
+    {
+        return $this->dateRange;
     }
 }

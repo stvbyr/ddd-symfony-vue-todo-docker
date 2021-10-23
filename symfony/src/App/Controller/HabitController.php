@@ -6,11 +6,10 @@ namespace App\Controller;
 
 use App\Form\ErrorResolver;
 use App\Form\HabitType;
+use Productivity\Habit\Application\Command\CreateHabitCommand;
+use Productivity\Habit\Application\Command\DeleteHabitCommand;
+use Productivity\Habit\Application\Command\UpdateHabitCommand;
 use Productivity\Habit\Application\Query\HabitQuery;
-use Productivity\Habit\Domain\HabitId;
-use Productivity\Todo\Application\Command\CreateHabitCommand;
-use Productivity\Todo\Application\Command\DeleteTodoCommand;
-use Productivity\Todo\Application\Command\UpdateTodoCommand;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,11 +24,11 @@ class HabitController extends AbstractController
     }
 
     #[Route('/habit/{uuid}', name: 'habit.read', methods: ['get'], format: 'json')]
-    public function read(string $uuid, HabitQuery $todoQuery): Response
+    public function read(string $uuid, HabitQuery $habitQuery): Response
     {
-        $todo = $todoQuery->find(HabitId::fromString($uuid));
+        $habit = $habitQuery->find($uuid);
 
-        return $this->json($todo);
+        return $this->json($habit);
     }
 
     #[Route('/habit/create', name: 'habit.create', methods: ['post'], format: 'json')]
@@ -44,18 +43,22 @@ class HabitController extends AbstractController
             $command = new CreateHabitCommand(
                 $form->get('title')->getData(),
                 $user->getUserIdentifier(),
-                $form->get('scheduledDate')->getData(),
+                [
+                    'from' => $form->get('fromDate')->getData(),
+                    'to' => $form->get('toDate')->getData(),
+                    'frequency' => $form->get('frequency')->getData(),
+                ]
             );
             $this->messageBus->dispatch($command);
 
-            return $this->json(['message' => 'Todo created successful']);
+            return $this->json(['message' => 'Habit created successful']);
         }
 
-        return $this->json(['message' => 'The Todo could not be created', 'errors' => ErrorResolver::getErrorsFromForm($form, true)], 400);
+        return $this->json(['message' => 'The Habit could not be created', 'errors' => ErrorResolver::getErrorsFromForm($form, true)], 400);
     }
 
-    #[Route('/habit/update/{uuid}', name: 'todo.update', methods: ['put'], format: 'json')]
-    public function update(string $uuid, Request $request): Response
+    #[Route('/habit/update/{uuid}', name: 'habit.update', methods: ['put'], format: 'json')]
+    public function update(string $uuid, Request $request, UserInterface $user): Response
     {
         $data = json_decode($request->getContent(), true);
         $form = $this->createForm(HabitType::class);
@@ -63,29 +66,34 @@ class HabitController extends AbstractController
         $form->submit($data);
 
         if ($form->isValid()) {
-            $command = new UpdateTodoCommand(
+            $command = new UpdateHabitCommand(
                 $uuid,
                 $form->get('title')->getData(),
-                $form->get('scheduledDate')->getData(),
+                $user->getUserIdentifier(),
+                [
+                    'from' => $form->get('fromDate')->getData(),
+                    'to' => $form->get('toDate')->getData(),
+                    'frequency' => $form->get('frequency')->getData(),
+                ],
             );
             $this->messageBus->dispatch($command);
 
-            return $this->json(['message' => 'Todo updated successful']);
+            return $this->json(['message' => 'Habit updated successful']);
         }
 
-        return $this->json(['message' => 'The Todo could not be updated'], 400);
+        return $this->json(['message' => 'The Habit could not be updated'], 400);
     }
 
-    #[Route('/habit/remove/{uuid}', name: 'todo.remove', methods: ['delete'], format: 'json')]
+    #[Route('/habit/remove/{uuid}', name: 'habit.remove', methods: ['delete'], format: 'json')]
     public function delete(string $uuid): Response
     {
         try {
-            $command = new DeleteTodoCommand($uuid);
+            $command = new DeleteHabitCommand($uuid);
             $this->messageBus->dispatch($command);
         } catch (\Exception $e) {
-            return $this->json(['message' => 'The Todo could not be removed'], 400);
+            return $this->json(['message' => 'The Habit could not be removed'], 400);
         }
 
-        return $this->json(['message' => 'Todo removed successful']);
+        return $this->json(['message' => 'Habit removed successful']);
     }
 }

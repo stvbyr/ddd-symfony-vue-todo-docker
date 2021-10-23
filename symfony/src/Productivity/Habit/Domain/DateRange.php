@@ -28,7 +28,7 @@ class DateRange implements JsonSerializable
         }
     }
 
-    public function fromArray(array $dateRange): self
+    public static function fromArray(array $dateRange): self
     {
         $dateRangeIsValid = (
             !isset($dateRange['from']) ||
