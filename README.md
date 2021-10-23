@@ -199,15 +199,27 @@ After identifying the process and settle for a ubiquitous language we can define
 
 ### Getting more Technical
 
-As we've seen the first use case in terms of singular todo items and habits are fundamentally different. Now we have to model this and come up with a suitable domain model (and database base transactions as well).
+As we've seen the first use case in terms of singular todo items and habits are fundamentally different. Now we have to model this and come up with a suitable domain model (and database transactions as well).
 
 From a users perspective we want to make sure that the handling of singular todo items are similar to the recurring ones. Obviously this is a matter of the frontend and is not affecting our domain model. 
 
-On the backend though we save and retrieve singular todo items 
-
 #### The Models
 
+#### Queries and Commands
 
+The Queries and Commands seem a little over engineered. But they help us separate the domain from the application. Let's look at the [TodoQuery](/symfony/src/Productivity/Todo/Application/Query/TodoQuery.php). 
+
+It is part of the Application namespace so it is allowed to be used in our symfony app. Its purpose is to fetch todo items for various filters (such as id or by username). 
+
+As you can see from the use statements we access classes within our domain namespace. Now lets look at the signatures of the public methods. They only use primitive types (plus PHP intern types such as Datetime) in their parameters and return primitive values. This is an important observation.
+
+By doing that we create an interface to our domain without exposing the domain itself. Essentially we map the primitive types to the domain ones. That limits the ways how we can interact with our domain. And that is a good thing. 
+
+A possible advantage is to quickly switch frameworks. Lets say you want to switch from symfony to laravel. You would need to rewrite the controller logic. If you look at the symfony controllers they are very slim because they don't handle complex logic.Everything that is contained within the domain stays essentially the same.
+
+With this approach we can precisely define what we can fetch from our domain. In case of the todos we are able to fetch a todo item by id, username and a list of all todo items.
+
+The Commands do the same but they are used for writing operations. They define what data is required to execute a certain command such as creating a new todo item.
 ### Sources
 
 * Example of a php DDD project: https://github.com/CodelyTV/php-ddd-example
