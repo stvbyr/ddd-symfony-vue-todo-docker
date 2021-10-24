@@ -75,7 +75,7 @@
         ],
         "test:coverage-text": [
             "@putenv XDEBUG_MODE=coverage",
-            "vendor/bin/phpunit --color=always --coverage-text"
+            "vendor/bin/phpunit --color=always --coverage-text --coverage-html coverage"
         ]
     },
     "conflict": {
