@@ -2,11 +2,11 @@ version: '3.7'
 
 services:
     db:
-        image: mysql:8.0.20
+        image: mariadb:10
         container_name: db
         command: --default-authentication-plugin=mysql_native_password
         volumes:
-            - './mysql:/var/lib/mysql'
+            - 'mysqldbvolume:/var/lib/mysql'
         environment:
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -29,8 +29,8 @@ services:
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         volumes:
-            - ./symfony:/code/symfony
-            - /code/symfony/vendor
+            - ./symfony:/var/www
+            - /var/www/vendor
         networks:
             - symfony
         depends_on:
@@ -41,25 +41,32 @@ services:
             context: .
             dockerfile: ./build/nginx/Dockerfile
         volumes:
-            - ./symfony:/code/symfony
-            - ./nginx:/var/logs/nginx
-            - ./frontend/dist:/app/dist
+            - ./symfony:/var/www
+            - ./nginx/logs:/var/logs/nginx
+            - ./frontend/dist:/var/www/public/dist
         ports:
             - 8080:80
             - 3001:3001
         networks:
             - symfony
+        depends_on:
+            - symfony
+            - vue
     vue:
         container_name: vue
         build:
             context: .
             dockerfile: ./build/vue/Dockerfile
         volumes:
-            - ./frontend:/app
-            - /app/node_modules
+            - ./frontend:/var/www
+            - /var/www/node_modules
         ports:
             - 3000:3000
         networks:
             - symfony
 networks:
     symfony:
+
+volumes:
+    mysqldbvolume:
+        driver: local
