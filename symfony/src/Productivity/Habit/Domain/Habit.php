@@ -23,7 +23,7 @@ class Habit
         string $title,
         User $user,
         DateRange $dateRange,
-        ?MovesCollection $moves,
+        ?MovesCollection $moves = null,
     ): self {
         $functionArguments = get_defined_vars();
 
