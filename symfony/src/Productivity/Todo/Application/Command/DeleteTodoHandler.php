@@ -14,7 +14,7 @@ final class DeleteTodoHandler implements Handler
     {
     }
 
-    public function __invoke(UpdateTodoCommand $command): void
+    public function __invoke(DeleteTodoCommand $command): void
     {
         $todoId = TodoId::fromString($command->getId());
         $todo = $this->todoRepository->remove($todoId);

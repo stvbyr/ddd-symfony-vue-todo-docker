@@ -22,16 +22,16 @@ class HabitQuery
         return $this->mapHabitsToDTOs($habits);
     }
 
-    public function findAllByUser(User $user): array
+    public function findAllByUser(string $username): array
     {
-        $habits = $this->habitRepository->findAllByUser($user);
+        $habits = $this->habitRepository->findAllByUser(new User($username));
 
         return $this->mapHabitsToDTOs($habits);
     }
 
-    public function find(HabitId $habitId): array
+    public function find(string $habitId): array
     {
-        $habit = $this->habitRepository->find($habitId);
+        $habit = $this->habitRepository->find(HabitId::fromString($habitId));
 
         return $this->maphabitToDTO($habit);
     }

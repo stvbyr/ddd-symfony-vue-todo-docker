@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Productivity\Todo\Application\Command;
+namespace Productivity\Habit\Application\Command;
 
 use App\Application\Command\Interface\Handler;
 use Productivity\Habit\Domain\DateRange;

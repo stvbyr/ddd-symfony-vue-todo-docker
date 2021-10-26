@@ -10,7 +10,6 @@ use Productivity\Todo\Application\Command\CreateTodoCommand;
 use Productivity\Todo\Application\Command\DeleteTodoCommand;
 use Productivity\Todo\Application\Command\UpdateTodoCommand;
 use Productivity\Todo\Application\Query\TodoQuery;
-use Productivity\Todo\Domain\TodoId;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +26,7 @@ class TodoController extends AbstractController
     #[Route('/todo/{uuid}', name: 'todo.read', methods: ['get'], format: 'json')]
     public function read(string $uuid, TodoQuery $todoQuery): Response
     {
-        $todo = $todoQuery->find(TodoId::fromString($uuid));
+        $todo = $todoQuery->find($uuid);
 
         return $this->json($todo);
     }

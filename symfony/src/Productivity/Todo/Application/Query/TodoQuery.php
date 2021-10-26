@@ -22,16 +22,16 @@ class TodoQuery
         return $this->mapTodosToDTOs($todos);
     }
 
-    public function findAllByUser(User $user): array
+    public function findAllByUser(string $username): array
     {
-        $todos = $this->todoRepository->findAllByUser($user);
+        $todos = $this->todoRepository->findAllByUser(new User($username));
 
         return $this->mapTodosToDTOs($todos);
     }
 
-    public function find(TodoId $todoId): array
+    public function find(string $todoId): array
     {
-        $todo = $this->todoRepository->find($todoId);
+        $todo = $this->todoRepository->find(TodoId::fromString($todoId));
 
         return $this->mapTodoToDTO($todo);
     }
