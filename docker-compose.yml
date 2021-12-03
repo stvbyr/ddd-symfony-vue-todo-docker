@@ -57,8 +57,7 @@ services:
             context: .
             dockerfile: ./build/vue/Dockerfile
         volumes:
-            - ./frontend:/var/www
-            - /var/www/node_modules
+            - ./frontend/code:/var/www/code  
         ports:
             - 3000:3000
         networks:
