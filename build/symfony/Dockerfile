@@ -41,8 +41,9 @@ WORKDIR /var/www
 
 COPY ./symfony ./
 
-RUN composer install --prefer-dist
+RUN rm -rf ./vendor
+RUN ln -s /var/build/symfony/vendor vendor
 
-RUN APP_ENV=prod bin/console cache:clear
+RUN composer install --prefer-dist
 
 EXPOSE 9000
