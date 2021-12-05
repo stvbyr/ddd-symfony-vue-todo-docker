@@ -16,6 +16,20 @@ services:
             - 3306:3306
         networks:
             - symfony
+    phpmyadmin:
+        image: phpmyadmin
+        container_name: phpmyadmin
+        ports:
+            - 8081:80
+        environment:
+            - PMA_ARBITRARY=1 
+            - PMA_HOST=db
+            - PMA_USER=root
+            - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
+        networks:
+            - symfony
+        depends_on:
+            - db
     symfony:
         container_name: symfony
         build:
