@@ -6,7 +6,7 @@ services:
         container_name: db
         command: --default-authentication-plugin=mysql_native_password
         volumes:
-            - 'mysqldbvolume:/var/lib/mysql'
+            - './dbdata:/var/lib/mysql'
         environment:
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -24,8 +24,8 @@ services:
         environment:
             - PMA_ARBITRARY=1 
             - PMA_HOST=db
-            - PMA_USER=root
-            - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - PMA_USER=${MYSQL_USER}
+            - PMA_PASSWORD=${MYSQL_PASSWORD}
         networks:
             - symfony
         depends_on:
@@ -78,7 +78,3 @@ services:
             - symfony
 networks:
     symfony:
-
-volumes:
-    mysqldbvolume:
-        driver: local
