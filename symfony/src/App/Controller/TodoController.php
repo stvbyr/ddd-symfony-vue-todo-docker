@@ -23,6 +23,14 @@ class TodoController extends AbstractController
     {
     }
 
+    #[Route('/todos', name: 'todo.all', methods: ['get'], format: 'json')]
+    public function all(TodoQuery $todoQuery, UserInterface $user): Response
+    {
+        $todos = $todoQuery->findAllByUser($user->getUserIdentifier());
+
+        return $this->json($todos);
+    }
+
     #[Route('/todo/{uuid}', name: 'todo.read', methods: ['get'], format: 'json')]
     public function read(string $uuid, TodoQuery $todoQuery): Response
     {
@@ -75,7 +83,7 @@ class TodoController extends AbstractController
         return $this->json(['message' => 'The Todo could not be updated'], 400);
     }
 
-    #[Route('/todo/remove/{uuid}', name: 'todo.remove', methods: ['delete'], format: 'json')]
+    #[Route('/todo/remove/{uuid}', name: 'todo.delete', methods: ['delete'], format: 'json')]
     public function delete(string $uuid): Response
     {
         try {

@@ -1,8 +1,11 @@
 /.env
 **/vendor
 **/node_modules
-/mysql/
-/nginx/
+coverage/
+dbdata/*
+!dbdata/.gitkeep
+nginx/*
+!nginx/.gitkeep
 
 ### VisualStudioCode ###
 .vscode/
@@ -19,6 +22,3 @@
 =======
 .vscode/
 
-
-##
-coverage/
