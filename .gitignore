@@ -4,7 +4,8 @@
 coverage/
 dbdata/*
 !dbdata/.gitkeep
-nginx/
+nginx/*
+!nginx/.gitkeep
 
 ### VisualStudioCode ###
 .vscode/
