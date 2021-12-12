@@ -28,7 +28,7 @@
         "symfony/security-csrf": "5.3.*",
         "symfony/serializer": "5.3.*",
         "symfony/validator": "^5.2",
-        "symfony/yaml": "5.3.*"
+        "symfony/yaml": "5.4.*"
     },
     "require-dev": {
         "dg/bypass-finals": "^1.3",
