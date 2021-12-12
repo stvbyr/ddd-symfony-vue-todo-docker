@@ -7,7 +7,7 @@ WORKDIR /var/www
 COPY ./frontend/ ./
 
 # install project dependencies
-RUN yarn install
+RUN npm install
 
 EXPOSE 3000
 
