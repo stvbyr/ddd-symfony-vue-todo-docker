@@ -8,7 +8,7 @@
         "lint": "npx vue-cli-service lint ./code/src/main.ts"
     },
     "dependencies": {
-        "core-js": "^3.20.0",
+        "core-js": "^3.20.1",
         "vue": "^3.2.26",
         "vue-router": "4"
     },
