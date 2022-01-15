@@ -26,6 +26,9 @@ class TodoTest extends KernelTestCase
     public function testOne(): void
     {
         $users = $this->entityManager->getRepository(User::class)->findAll();
+
+        dump($users);
+
         $this->assertSame(1, count($users));
     }
 }
