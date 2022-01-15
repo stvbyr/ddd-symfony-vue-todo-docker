@@ -40,6 +40,9 @@ class HabitTest extends TestCase
         $this->assertSame($this->habitConfig['id'], $habit->getId());
         $this->assertSame($this->habitConfig['title'], $habit->getTitle());
         $this->assertSame($this->habitConfig['user'], $habit->getUser());
+        $this->assertSame('sentou', $habit->getUser()->getUsername());
+        $this->assertSame($this->habitConfig['dateRange'], $habit->getDateRange());
+        $this->assertSame(8, $habit->getMoves()->count());
     }
 
     public function testCorrectAmountOfMovesAreGenerated(): void
