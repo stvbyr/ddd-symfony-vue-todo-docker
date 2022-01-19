@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c8770954e95c0eeabbaac1dbdb55cc0",
+    "content-hash": "25cc91eae9440213d9abb612c115fae2",
     "packages": [
         {
             "name": "brick/math",
@@ -68,16 +68,16 @@
         },
         {
             "name": "composer/package-versions-deprecated",
-            "version": "1.11.99.4",
+            "version": "1.11.99.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/package-versions-deprecated.git",
-                "reference": "b174585d1fe49ceed21928a945138948cb394600"
+                "reference": "b4f54f74ef3453349c24a845d22392cd31e65f1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/b174585d1fe49ceed21928a945138948cb394600",
-                "reference": "b174585d1fe49ceed21928a945138948cb394600",
+                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/b4f54f74ef3453349c24a845d22392cd31e65f1d",
+                "reference": "b4f54f74ef3453349c24a845d22392cd31e65f1d",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +121,7 @@
             "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
             "support": {
                 "issues": "https://github.com/composer/package-versions-deprecated/issues",
-                "source": "https://github.com/composer/package-versions-deprecated/tree/1.11.99.4"
+                "source": "https://github.com/composer/package-versions-deprecated/tree/1.11.99.5"
             },
             "funding": [
                 {
@@ -137,7 +137,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-09-13T08:41:34+00:00"
+            "time": "2022-01-17T14:14:24+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1780,16 +1780,16 @@
         },
         {
             "name": "lexik/jwt-authentication-bundle",
-            "version": "v2.14.3",
+            "version": "v2.14.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lexik/LexikJWTAuthenticationBundle.git",
-                "reference": "174fd218eb9ecec8228d00e32dc5f457d8df51c4"
+                "reference": "b08d174fc979e12f609ad075e49b46a9e30ecfac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lexik/LexikJWTAuthenticationBundle/zipball/174fd218eb9ecec8228d00e32dc5f457d8df51c4",
-                "reference": "174fd218eb9ecec8228d00e32dc5f457d8df51c4",
+                "url": "https://api.github.com/repos/lexik/LexikJWTAuthenticationBundle/zipball/b08d174fc979e12f609ad075e49b46a9e30ecfac",
+                "reference": "b08d174fc979e12f609ad075e49b46a9e30ecfac",
                 "shasum": ""
             },
             "require": {
@@ -1883,7 +1883,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lexik/LexikJWTAuthenticationBundle/issues",
-                "source": "https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.14.3"
+                "source": "https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.14.4"
             },
             "funding": [
                 {
@@ -1895,7 +1895,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-15T15:22:27+00:00"
+            "time": "2022-01-04T23:33:23+00:00"
         },
         {
             "name": "namshi/jose",
@@ -3763,16 +3763,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v2.0.1",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "3dbfa5c4e3308fd9def9a2006a20fa0c272a30a2"
+                "reference": "ee7d282ff48c55d8e86d2aaa47802e80a3622b6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/3dbfa5c4e3308fd9def9a2006a20fa0c272a30a2",
-                "reference": "3dbfa5c4e3308fd9def9a2006a20fa0c272a30a2",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/ee7d282ff48c55d8e86d2aaa47802e80a3622b6e",
+                "reference": "ee7d282ff48c55d8e86d2aaa47802e80a3622b6e",
                 "shasum": ""
             },
             "require": {
@@ -3808,7 +3808,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v2.0.1"
+                "source": "https://github.com/symfony/flex/tree/v2.1.1"
             },
             "funding": [
                 {
@@ -3824,7 +3824,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-29T15:40:20+00:00"
+            "time": "2022-01-19T08:54:03+00:00"
         },
         {
             "name": "symfony/form",
@@ -4428,16 +4428,16 @@
         },
         {
             "name": "symfony/password-hasher",
-            "version": "v5.4.0",
+            "version": "v5.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/password-hasher.git",
-                "reference": "60c4aba11e2ce4140a5a9cbc13733da4b8333e2d"
+                "reference": "62748882f339e2a00751af8375258cf1b66a1c57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/password-hasher/zipball/60c4aba11e2ce4140a5a9cbc13733da4b8333e2d",
-                "reference": "60c4aba11e2ce4140a5a9cbc13733da4b8333e2d",
+                "url": "https://api.github.com/repos/symfony/password-hasher/zipball/62748882f339e2a00751af8375258cf1b66a1c57",
+                "reference": "62748882f339e2a00751af8375258cf1b66a1c57",
                 "shasum": ""
             },
             "require": {
@@ -4481,7 +4481,7 @@
                 "password"
             ],
             "support": {
-                "source": "https://github.com/symfony/password-hasher/tree/v5.4.0"
+                "source": "https://github.com/symfony/password-hasher/tree/v5.4.2"
             },
             "funding": [
                 {
@@ -4497,7 +4497,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-10-30T15:55:55+00:00"
+            "time": "2021-12-16T21:58:21+00:00"
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
@@ -5542,16 +5542,16 @@
         },
         {
             "name": "symfony/security-bundle",
-            "version": "v5.4.1",
+            "version": "v5.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-bundle.git",
-                "reference": "39e7e10048a0cad8c4213603f8db173779fcf07d"
+                "reference": "4da15c5a30ec90acb4dd2d27b2e046385212192e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-bundle/zipball/39e7e10048a0cad8c4213603f8db173779fcf07d",
-                "reference": "39e7e10048a0cad8c4213603f8db173779fcf07d",
+                "url": "https://api.github.com/repos/symfony/security-bundle/zipball/4da15c5a30ec90acb4dd2d27b2e046385212192e",
+                "reference": "4da15c5a30ec90acb4dd2d27b2e046385212192e",
                 "shasum": ""
             },
             "require": {
@@ -5624,7 +5624,7 @@
             "description": "Provides a tight integration of the Security component into the Symfony full-stack framework",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/security-bundle/tree/v5.4.1"
+                "source": "https://github.com/symfony/security-bundle/tree/v5.4.2"
             },
             "funding": [
                 {
@@ -5640,20 +5640,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-04T17:10:39+00:00"
+            "time": "2021-12-16T21:58:21+00:00"
         },
         {
             "name": "symfony/security-core",
-            "version": "v5.4.0",
+            "version": "v5.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-core.git",
-                "reference": "cc961891c83fc87fd31361b85032db35ae9770e6"
+                "reference": "11d87d17650a5b8b21da8b6df208bfc8a9b918c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-core/zipball/cc961891c83fc87fd31361b85032db35ae9770e6",
-                "reference": "cc961891c83fc87fd31361b85032db35ae9770e6",
+                "url": "https://api.github.com/repos/symfony/security-core/zipball/11d87d17650a5b8b21da8b6df208bfc8a9b918c7",
+                "reference": "11d87d17650a5b8b21da8b6df208bfc8a9b918c7",
                 "shasum": ""
             },
             "require": {
@@ -5717,7 +5717,7 @@
             "description": "Symfony Security Component - Core Library",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/security-core/tree/v5.4.0"
+                "source": "https://github.com/symfony/security-core/tree/v5.4.2"
             },
             "funding": [
                 {
@@ -5733,7 +5733,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-23T19:07:08+00:00"
+            "time": "2021-12-28T17:15:56+00:00"
         },
         {
             "name": "symfony/security-csrf",
@@ -5876,16 +5876,16 @@
         },
         {
             "name": "symfony/security-http",
-            "version": "v5.4.0",
+            "version": "v5.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-http.git",
-                "reference": "3fa1dcbde86f12454a78c69e9d1a6c3dca776ea4"
+                "reference": "3682db42fc542ad4b42a2e0d064cb25e13df494a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-http/zipball/3fa1dcbde86f12454a78c69e9d1a6c3dca776ea4",
-                "reference": "3fa1dcbde86f12454a78c69e9d1a6c3dca776ea4",
+                "url": "https://api.github.com/repos/symfony/security-http/zipball/3682db42fc542ad4b42a2e0d064cb25e13df494a",
+                "reference": "3682db42fc542ad4b42a2e0d064cb25e13df494a",
                 "shasum": ""
             },
             "require": {
@@ -5941,7 +5941,7 @@
             "description": "Symfony Security Component - HTTP Integration",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/security-http/tree/v5.4.0"
+                "source": "https://github.com/symfony/security-http/tree/v5.4.2"
             },
             "funding": [
                 {
@@ -5957,7 +5957,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-29T15:50:27+00:00"
+            "time": "2021-12-29T10:10:35+00:00"
         },
         {
             "name": "symfony/serializer",
