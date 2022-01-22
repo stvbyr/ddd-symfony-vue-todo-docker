@@ -43,7 +43,4 @@ COPY ./symfony ./
 
 RUN composer install
 
-RUN mkdir -p var
-RUN chmod -R 755 var
-
 EXPOSE 9000
