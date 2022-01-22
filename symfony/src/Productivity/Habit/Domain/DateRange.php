@@ -31,9 +31,9 @@ class DateRange implements JsonSerializable
     public static function fromArray(array $dateRange): self
     {
         $dateRangeIsValid = (
-            !isset($dateRange['from']) ||
-            !isset($dateRange['to']) ||
-            !isset($dateRange['frequency'])
+            isset($dateRange['from']) &&
+            isset($dateRange['to']) &&
+            isset($dateRange['frequency'])
         );
 
         if (!$dateRangeIsValid) {
