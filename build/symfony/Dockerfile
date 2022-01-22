@@ -41,9 +41,6 @@ WORKDIR /var/www
 
 COPY ./symfony ./
 
-RUN rm -rf ./vendor
-RUN ln -s /var/build/symfony/vendor vendor
-
-RUN composer install --prefer-dist
+RUN composer install
 
 EXPOSE 9000
