@@ -46,8 +46,7 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true,
-        "vendor-dir": "./../build/symfony/vendor"
+        "sort-packages": true
     },
     "autoload": {
         "psr-4": {

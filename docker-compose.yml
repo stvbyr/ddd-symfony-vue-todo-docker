@@ -43,6 +43,7 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         volumes:
             - ./symfony:/var/www 
+            - /var/www/vendor
         networks:
             - symfony
         depends_on:
@@ -56,6 +57,7 @@ services:
             - ./symfony:/var/www
             - ./nginx/logs:/var/logs/nginx
             - ./frontend/dist:/var/www/public/dist
+            - /var/logs/nginx/
         ports:
             - 8080:80
             - 3001:3001
@@ -70,7 +72,8 @@ services:
             context: .
             dockerfile: ./build/vue/Dockerfile
         volumes:
-            - ./frontend/code:/var/www/code  
+            - ./frontend:/var/www 
+            - /var/www/node_modules 
         ports:
             - 3000:3000
         networks:
