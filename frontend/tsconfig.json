@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "moduleResolution": "node",
+        "isolatedModules" : true,
+        "strict": true,
+        "sourceMap": true,
+        "paths": {
+            "@/*": ["./*"]
+        },
+        "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "tests/**/*.ts",
+        "tests/**/*.tsx",
+        "shims-vue.d.ts",
+        "component.d.ts"
+    ],
+    "exclude": ["node_modules"]
+}
