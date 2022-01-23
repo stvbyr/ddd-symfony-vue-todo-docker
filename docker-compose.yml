@@ -42,8 +42,8 @@ services:
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         volumes:
-            - ./symfony:/var/www 
-            - /var/www/vendor
+            - ./symfony:/var/www
+        command: sh -c "cp -r /var/composer_cache/vendor/. /var/www/vendor && composer run-script auto-scripts"    
         networks:
             - symfony
         depends_on:
@@ -73,10 +73,10 @@ services:
             dockerfile: ./build/vue/Dockerfile
         volumes:
             - ./frontend:/var/www 
-            - /var/www/node_modules 
         ports:
             - 3000:3000
         networks:
             - symfony
+        command: sh -c "cp -r /var/node_cache/node_modules/. /var/www/node_modules && exec npm run dev"
 networks:
     symfony:

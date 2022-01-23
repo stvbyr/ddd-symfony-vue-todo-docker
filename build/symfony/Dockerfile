@@ -37,10 +37,17 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} >
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+WORKDIR /var/composer_cache
+COPY ./symfony/composer.json ./
+# no-scripts because they need to run in the project root because of dependencies there
+RUN composer install --no-scripts
+RUN chown -R 1000:1000 .
+
 WORKDIR /var/www
 
 COPY ./symfony ./
 
-RUN composer install
+RUN chown -R 1000:1000 .
+USER 1000
 
 EXPOSE 9000
