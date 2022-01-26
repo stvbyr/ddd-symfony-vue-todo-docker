@@ -22,7 +22,7 @@ services:
         ports:
             - 8081:80
         environment:
-            - PMA_ARBITRARY=1 
+            - PMA_ARBITRARY=1
             - PMA_HOST=db
             - PMA_USER=${MYSQL_USER}
             - PMA_PASSWORD=${MYSQL_PASSWORD}
@@ -43,7 +43,7 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         volumes:
             - ./symfony:/var/www
-        command: sh -c "cp -r /var/composer_cache/vendor/. /var/www/vendor && composer run-script auto-scripts"    
+            - /var/www/symfony/vendor
         networks:
             - symfony
         depends_on:
@@ -72,7 +72,7 @@ services:
             context: .
             dockerfile: ./build/vue/Dockerfile
         volumes:
-            - ./frontend:/var/www 
+            - ./frontend:/var/www
         ports:
             - 3000:3000
         networks:
