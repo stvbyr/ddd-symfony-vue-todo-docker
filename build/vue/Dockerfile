@@ -9,5 +9,3 @@ COPY ./frontend/ ./
 
 RUN chown -R node:node .
 USER node
-
-CMD [ "npm", "run", "dev" ]

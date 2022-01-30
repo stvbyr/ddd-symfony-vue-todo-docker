@@ -40,8 +40,8 @@ services:
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         volumes:
-            - ./symfony:/var/www
-            - /var/www/vendor
+            - ./symfony:/var/www 
+        command: bash -c "composer install --no-interaction && php-fpm"
         depends_on:
             - db
     nginx:
@@ -65,6 +65,6 @@ services:
             dockerfile: ./build/vue/Dockerfile
         volumes:
             - ./frontend:/var/www
-            - /var/www/node_modules
+        command: sh -c "npm i && npm run dev"
         ports:
             - 3000:3000
