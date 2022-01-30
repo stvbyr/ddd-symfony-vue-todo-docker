@@ -1,9 +1,8 @@
-/.env
 **/vendor
 **/node_modules
 coverage/
-dbdata/*
-!dbdata/.gitkeep
+build/dbdata/*
+!build/dbdata/.gitkeep
 nginx/*
 !nginx/.gitkeep
 

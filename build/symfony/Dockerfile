@@ -39,10 +39,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 WORKDIR /var/www
 
+RUN mkdir var
 COPY ./symfony ./
 RUN composer install
-
-RUN chown -R 1000:1000 .
-USER 1000
-
-EXPOSE 9000
