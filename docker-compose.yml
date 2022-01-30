@@ -6,7 +6,7 @@ services:
         container_name: db
         command: --default-authentication-plugin=mysql_native_password
         volumes:
-            - './dbdata:/var/lib/mysql'
+            - './build/dbdata:/var/lib/mysql'
         environment:
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
