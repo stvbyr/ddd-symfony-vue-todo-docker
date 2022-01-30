@@ -77,6 +77,6 @@ services:
             - 3000:3000
         networks:
             - symfony
-        command: sh -c "cp -r /var/node_cache/node_modules/. /var/www/node_modules && exec npm run dev"
+            
 networks:
     symfony:
