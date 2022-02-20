@@ -5,6 +5,7 @@ build/dbdata/*
 !build/dbdata/.gitkeep
 nginx/*
 !nginx/.gitkeep
+*.cache
 
 ### VisualStudioCode ###
 .vscode/
